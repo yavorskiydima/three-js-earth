@@ -146,7 +146,7 @@ class Earth {
 		}
 	}
 	newCity(name, coord, func) {
-		let sphereGeometry = new THREE.SphereGeometry(0.025, 8, 8);
+		let sphereGeometry = new THREE.SphereGeometry(0.04, 8, 8);
 		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 		let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
 		earthMesh.name = name;

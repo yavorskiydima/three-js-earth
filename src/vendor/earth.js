@@ -13,6 +13,7 @@ class Earth {
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.controls = new THREE.TrackballControls(this.camera);
+		this.interaction = new THREE.Interaction(this.renderer, this.scene, this.camera);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.getElementById(el).appendChild(this.renderer.domElement);
 		this.camera.position.z = 15;
@@ -144,7 +145,7 @@ class Earth {
 			return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color }));
 		}
 	}
-	newCity(name, coord) {
+	newCity(name, coord, func) {
 		let sphereGeometry = new THREE.SphereGeometry(0.025, 8, 8);
 		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 		let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
@@ -155,6 +156,10 @@ class Earth {
 		earthMesh.position.z = XYZ.z;
 		earthMesh.position.x = XYZ.x;
 		earthMesh.position.y = XYZ.y;
+		earthMesh.on('click', ev => {
+			return func(ev.data.target.name)
+		});
+
 		this.earth.add(earthMesh)
 	}
 

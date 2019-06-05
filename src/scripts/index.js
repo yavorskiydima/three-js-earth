@@ -3,13 +3,13 @@ import '../styles/index.scss';
 const earth = new Earth('webgl');
 earth.axis();
 
-earth.newCity('Ekaterinburg', { lat: 56.8389261, lon: 60.6057025 });
-earth.newCity('Moscow', { lat: 55.755826, lon: 37.617300 });
+function callbackFunc(name) {
+    console.log(name);
+}
 
-//earth.newCity({ lat: -55.82597325, lon: -67.43408203 });
-//earth.newCity({ lat: 21.44284311, lon: -86.81945801 });
+earth.newCity('Ekaterinburg', { lat: 56.8389261, lon: 60.6057025 }, callbackFunc);
+earth.newCity('Moscow', { lat: 55.755826, lon: 37.617300 }, callbackFunc);
+earth.newCity('Test', { lat: 56.29737555, lon: 49.11150125 }, callbackFunc);
 
-//setTimeout(() => earth.showCity({ lat: -55.82597325, lon: -67.43408203 }, 5000), 5000);
 
 setTimeout(() => earth.showCity('Ekaterinburg', 4000), 2000);
-setTimeout(() => earth.show('Ekaterinburg'), 2000);

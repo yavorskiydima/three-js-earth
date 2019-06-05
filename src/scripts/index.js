@@ -8,12 +8,7 @@ function callbackFunc(name) {
     console.log(name);
 }
 
-//earth.newCity('Ekaterinburg', { lat: 56.8389261, lon: 60.6057025 }, callbackFunc);
-//earth.newCity('Moscow', { lat: 55.755826, lon: 37.617300 }, callbackFunc);
-//earth.newCity('Test', { lat: 56.29737555, lon: 49.11150125 }, callbackFunc);
-
-
-//setTimeout(() => earth.showCity('Ekaterinburg', 4000), 2000);
-
-
 city.map(item => earth.newCity(item.name, { lat: item.lat, lon: item.lon }, callbackFunc));
+
+
+//setTimeout(() => earth.showCity('Союз «Уральская ТПП»', 4000), 4000);

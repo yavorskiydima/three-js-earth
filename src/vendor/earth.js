@@ -1,6 +1,6 @@
 class Earth {
 	radius = 5;
-	segments = 32;
+	segments = 64;
 
 	isEarthRotation = null;
 
@@ -35,10 +35,10 @@ class Earth {
 			return new THREE.Mesh(
 				new THREE.SphereGeometry(radius, segments, segments),
 				new THREE.MeshPhongMaterial({
-					map: THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
-					bumpMap: THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+					map: new THREE.TextureLoader().load('images/2_no_clouds_4k.jpg'),
+					bumpMap: new THREE.TextureLoader().load('images/elev_bump_4k.jpg'),
 					bumpScale: 0.005,
-					specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
+					specularMap: new THREE.TextureLoader().load('images/water_4k.png'),
 					specular: new THREE.Color('grey')
 				})
 			);
@@ -48,7 +48,7 @@ class Earth {
 			return new THREE.Mesh(
 				new THREE.SphereGeometry(radius + 0.003, segments, segments),
 				new THREE.MeshPhongMaterial({
-					map: THREE.ImageUtils.loadTexture('images/fair_clouds_4k.png'),
+					map: new THREE.TextureLoader().load('images/fair_clouds_4k.png'),
 					transparent: true
 				})
 			);
@@ -58,7 +58,7 @@ class Earth {
 			return new THREE.Mesh(
 				new THREE.SphereGeometry(radius, segments, segments),
 				new THREE.MeshBasicMaterial({
-					map: THREE.ImageUtils.loadTexture('images/galaxy_starfield.png'),
+					map: new THREE.TextureLoader().load('images/galaxy_starfield.png'),
 					side: THREE.BackSide
 				})
 			);
@@ -100,6 +100,10 @@ class Earth {
 		this.move();
 		this.enableControls(false);
 		const city = this.scene.getObjectByName(name)
+		city.material.color.r = 1;
+		city.material.color.g = 0;
+		city.material.color.b = 0;
+		console.log(city);
 		const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1)
 		console.log(checkCollision(XYZ))
 		if (checkCollision(XYZ)) {
@@ -113,7 +117,6 @@ class Earth {
 			const end = new TWEEN.Tween(this.camera.position)
 				.to(XYZ, time / 2)
 				.easing(TWEEN.Easing.Cubic.Out)
-				.onComplete(() => this.enableControls(true))
 
 			new TWEEN.Tween(this.camera.position)
 				.to({ x: srX, y: srY, z: srZ }, time / 2)
@@ -126,7 +129,6 @@ class Earth {
 			new TWEEN.Tween(this.camera.position)
 				.to(XYZ, time)
 				.easing(TWEEN.Easing.Cubic.InOut)
-				.onComplete(() => this.enableControls(true))
 				.start()
 		}
 	}
@@ -146,7 +148,7 @@ class Earth {
 		}
 	}
 	newCity(name, coord, func) {
-		let sphereGeometry = new THREE.SphereGeometry(0.04, 8, 8);
+		let sphereGeometry = new THREE.SphereGeometry(0.04, 16, 16);
 		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 		let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
 		earthMesh.name = name;

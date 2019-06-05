@@ -1,14 +1,14 @@
 {
-  "name": "webpack-starter",
+  "name": "three-earth-api",
   "version": "1.0.0",
-  "description": "A light foundation for your next frontend project based on webpack.",
+  "description": "three-earth-api",
   "scripts": {
     "build": "webpack --config webpack/webpack.config.prod.js  --colors",
     "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wbkd/webpack-starter.git"
+    "url": "git+https://github.com/yavorskiydima/three-earth-api.git"
   },
   "keywords": [
     "webpack",
@@ -18,11 +18,8 @@
     "javascript",
     "webdev"
   ],
-  "author": "webkid.io",
+  "author": "yavorskiydima",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wbkd/webpack-starter/issues"
-  },
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/plugin-proposal-class-properties": "^7.4.0",

@@ -17,7 +17,7 @@ class Earth {
 		document.getElementById(el).appendChild(this.renderer.domElement);
 		this.camera.position.z = 15;
 		this.controls.maxDistance = 50;
-		this.controls.minDistance = 8;
+		this.controls.minDistance = 6;
 		this.scene.add(new THREE.AmbientLight(0xffffff, 1));
 		this.scene.add(createStars(90, 64))
 		this.earth = new THREE.Group();
@@ -78,38 +78,54 @@ class Earth {
 		this.renderer.render(this.scene, this.camera);
 	}
 
-	startEarthRotation(x, y, z) {
-		this.isEarthRotation = { x, y, z };
+	move(x, y, z) {
+		this.isEarthRotation = (x === undefined) ? null : { x, y, z }
 	}
-	stopEarthRotation() {
-		this.isEarthRotation = null;
+	enableControls(flag) {
+		this.controls.enabled = flag;
 	}
 
-	cameraRotation(coords, time) {
-		console.log(this.checkCollision(coords.position))
-		if (this.checkCollision(coords.position)) {
-			let srX = (this.camera.position.x + coords.position.x) * 2;
-			let srY = (this.camera.position.y + coords.position.y) * 2;
-			let srZ = (this.camera.position.z + coords.position.z) * 2;
+	showCity(coord, time) {
+		const checkCollision = (position) => {
+			var direction = new THREE.Vector3(position.x, position.y, position.z);
+			var startPoint = this.camera.position.clone();
+			var directionVector = direction.sub(startPoint);
+			var ray = new THREE.Raycaster(startPoint, directionVector.normalize());
+			this.scene.updateMatrixWorld();
+			var rayIntersects = ray.intersectObject(this.sphere, true);
+			return Boolean(rayIntersects.length);
+		}
 
-			if (Math.abs(srX) < Math.abs(srY) && Math.abs(srX) < Math.abs(srZ)) { srX = srX > 0 ? 15 : -15 }
-			else if (Math.abs(srY) < Math.abs(srX) && Math.abs(srY) < Math.abs(srZ)) { srY = srY > 0 ? 15 : -15 }
+		this.move();
+		this.enableControls(false);
+		const XYZ = this.decodeCoord(coord.lat, coord.lon, this.radius + 1)
+		console.log(checkCollision(coord))
+		if (checkCollision(coord)) {
+			let srX = (this.camera.position.x + XYZ.x) * 2;
+			let srY = (this.camera.position.y + XYZ.y) * 2;
+			let srZ = (this.camera.position.z + XYZ.z) * 2;
+
+			const min = Math.min(Math.abs(srX), Math.abs(srY), Math.abs(srZ));
+			if (Math.abs(min) === Math.abs(srX)) { srX = srX > 0 ? 15 : -15 }
+			else if (Math.abs(min) === Math.abs(srY)) { srY = srY > 0 ? 15 : -15 }
 			else { srZ = srZ > 0 ? 15 : -15 }
 			const end = new TWEEN.Tween(this.camera.position)
-				.to(coords.position, time / 2)
+				.to(XYZ, time / 2)
 				.easing(TWEEN.Easing.Cubic.Out)
+				.onComplete(() => this.enableControls(true))
 
 			new TWEEN.Tween(this.camera.position)
 				.to({ x: srX, y: srY, z: srZ }, time / 2)
 				.easing(TWEEN.Easing.Cubic.In)
-				.onComplete(function () {
+				.onComplete(() => {
 					end.start();
 				})
 				.start()
 		} else {
 			new TWEEN.Tween(this.camera.position)
-				.to(coords.position, time)
+				.to(XYZ, time)
 				.easing(TWEEN.Easing.Cubic.InOut)
+				.onComplete(() => this.enableControls(true))
 				.start()
 		}
 	}
@@ -128,44 +144,27 @@ class Earth {
 			return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color }));
 		}
 	}
-	createCity1(coord, color) {
+	newCity(coord) {
 		let sphereGeometry = new THREE.SphereGeometry(0.025, 8, 8);
-		let sphereMaterial = new THREE.MeshBasicMaterial({ color });
+		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 		let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-		const XYZ = this.decodeCoord(coord.lat, coord.lon)
+		const XYZ = this.decodeCoord(coord.lat, coord.lon, this.radius)
 		earthMesh.position.z = XYZ.z;
 		earthMesh.position.x = XYZ.x;
 		earthMesh.position.y = XYZ.y;
 		this.earth.add(earthMesh)
 	}
 
-	checkCollision(position) {
-		var direction = new THREE.Vector3(position.x, position.y, position.z);
-		var startPoint = this.camera.position.clone();
-		var directionVector = direction.sub(startPoint);
-		var ray = new THREE.Raycaster(startPoint, directionVector.normalize());
-		this.scene.updateMatrixWorld();
-		var rayIntersects = ray.intersectObject(this.sphere, true);
-		return Boolean(rayIntersects.length);
-	}
 
-	decodeCoord(lat, lon) {
+
+	decodeCoord(lat, lon, r) {
 		var phi = (90 - lat) * (Math.PI / 180);
 		var theta = (lon + 180) * (Math.PI / 180);
 		const obj = {};
-		obj.z = ((this.radius) * Math.sin(phi) * Math.cos(theta));
-		obj.x = ((this.radius) * Math.sin(phi) * Math.sin(theta));
-		obj.y = ((this.radius) * Math.cos(phi));
+		obj.z = (r * Math.sin(phi) * Math.cos(theta));
+		obj.x = (r * Math.sin(phi) * Math.sin(theta));
+		obj.y = (r * Math.cos(phi));
 		return obj;
-	}
-	changeX() {
-		this.sphere.rotation.x += 0.03;
-	}
-	changeY() {
-		this.sphere.rotation.y += 0.01;
-	}
-	changeZ() {
-		this.sphere.rotation.z += 0.03;
 	}
 
 }

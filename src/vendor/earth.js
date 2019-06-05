@@ -10,17 +10,21 @@ class Earth {
 
 	init(el) {
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100);
+		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.controls = new THREE.TrackballControls(this.camera);
 		this.interaction = new THREE.Interaction(this.renderer, this.scene, this.camera);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.getElementById(el).appendChild(this.renderer.domElement);
-		this.camera.position.z = 15;
+		this.camera.position.x = -14.206810353469914;
+		this.camera.position.y = 10.785748001267004;
+		this.camera.position.z = -1.7872953451761553;
 		this.controls.maxDistance = 50;
 		this.controls.minDistance = 6;
 		this.scene.add(new THREE.AmbientLight(0xffffff, 1));
-		this.scene.add(createStars(90, 64))
+		this.star = createStars(90, 64);
+
+		this.scene.add(this.star)
 		this.earth = new THREE.Group();
 		this.sphere = createSphere(this.radius, this.segments);
 		this.sphere.rotation.y = 1.57;
@@ -28,7 +32,8 @@ class Earth {
 		this.earth.add(createClouds(this.radius, this.segments));
 		this.scene.add(this.earth);
 
-
+		this.move(0, 0.02, 0);
+		this.enableControls(false)
 		this.render();
 
 		function createSphere(radius, segments) {
@@ -74,6 +79,7 @@ class Earth {
 			this.earth.rotation.y += this.isEarthRotation.y;
 			this.earth.rotation.z += this.isEarthRotation.z;
 		}
+		this.star.rotation.x += 0.0005
 
 		requestAnimationFrame(this.render);
 		this.renderer.render(this.scene, this.camera);
@@ -148,7 +154,7 @@ class Earth {
 		}
 	}
 	newCity(name, coord, func) {
-		let sphereGeometry = new THREE.SphereGeometry(0.04, 16, 16);
+		let sphereGeometry = new THREE.SphereGeometry(0.02, 16, 16);
 		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 		let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
 		earthMesh.name = name;

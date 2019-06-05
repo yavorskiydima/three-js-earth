@@ -85,7 +85,7 @@ class Earth {
 		this.controls.enabled = flag;
 	}
 
-	showCity(coord, time) {
+	showCity(name, time) {
 		const checkCollision = (position) => {
 			var direction = new THREE.Vector3(position.x, position.y, position.z);
 			var startPoint = this.camera.position.clone();
@@ -98,13 +98,13 @@ class Earth {
 
 		this.move();
 		this.enableControls(false);
-		const XYZ = this.decodeCoord(coord.lat, coord.lon, this.radius + 1)
-		console.log(checkCollision(coord))
-		if (checkCollision(coord)) {
+		const city = this.scene.getObjectByName(name)
+		const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1)
+		console.log(checkCollision(XYZ))
+		if (checkCollision(XYZ)) {
 			let srX = (this.camera.position.x + XYZ.x) * 2;
 			let srY = (this.camera.position.y + XYZ.y) * 2;
 			let srZ = (this.camera.position.z + XYZ.z) * 2;
-
 			const min = Math.min(Math.abs(srX), Math.abs(srY), Math.abs(srZ));
 			if (Math.abs(min) === Math.abs(srX)) { srX = srX > 0 ? 15 : -15 }
 			else if (Math.abs(min) === Math.abs(srY)) { srY = srY > 0 ? 15 : -15 }
@@ -144,18 +144,19 @@ class Earth {
 			return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color }));
 		}
 	}
-	newCity(coord) {
+	newCity(name, coord) {
 		let sphereGeometry = new THREE.SphereGeometry(0.025, 8, 8);
 		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 		let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		earthMesh.name = name;
+		earthMesh.lat = coord.lat;
+		earthMesh.lon = coord.lon;
 		const XYZ = this.decodeCoord(coord.lat, coord.lon, this.radius)
 		earthMesh.position.z = XYZ.z;
 		earthMesh.position.x = XYZ.x;
 		earthMesh.position.y = XYZ.y;
 		this.earth.add(earthMesh)
 	}
-
-
 
 	decodeCoord(lat, lon, r) {
 		var phi = (90 - lat) * (Math.PI / 180);

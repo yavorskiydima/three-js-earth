@@ -1,4 +1,5 @@
 import '../styles/index.scss';
+import { showVideo } from "./showVideoCallback";
 import { city } from '../city';
 
 const TIME_WAIT_PHONE = 5000;
@@ -11,41 +12,42 @@ audio.loop = true;
 
 const earth = new Earth('webgl');
 
+
 $(".phone").css('display', 'none');
 
 function callbackFunc(name) {
-    if (name !== cityView[cityCount]) return;
-
-    //callback на окончание видео
-    earth.defaultCamera();
-    cityCount++;
-    if (cityCount === cityView.length) {
-        console.log('finish');
-    } else {
-        setTimeout(() => {
-            $(".phone").css('display', 'block');
-            audio.play();
-        }, TIME_WAIT_PHONE + 4000);
-    }
+  if (name !== cityView[cityCount]) return;
+  showVideo("./images/videoplayback.mp4");
+  //callback на окончание видео
+  earth.defaultCamera();
+  cityCount++;
+  if (cityCount === cityView.length) {
+    console.log('finish');
+  } else {
+    setTimeout(() => {
+      $(".phone").css('display', 'block');
+      audio.play();
+    }, TIME_WAIT_PHONE + 4000);
+  }
 }
 
 city.map(item => earth.newCity(item.name, { lat: item.lat, lon: item.lon }, callbackFunc));
 
 $(".play-btn").click(function () {
-    $(".play-btn").addClass("end");
+  $(".play-btn").addClass("end");
+  setTimeout(() => {
+    $(".play-btn").css('display', 'none');
+    earth.enableControls(true);
     setTimeout(() => {
-        $(".play-btn").css('display', 'none');
-        earth.enableControls(true);
-        setTimeout(() => {
-            $(".phone").css('display', 'block');
-            audio.play();
-        }, TIME_WAIT_PHONE);
+      $(".phone").css('display', 'block');
+      audio.play();
+    }, TIME_WAIT_PHONE);
 
-    }, 2100);
+  }, 2100);
 });
 
 $(".phone").click(function () {
-    $(".phone").css('display', 'none');
-    audio.pause();
-    earth.showCity(cityView[cityCount], 2000);
+  $(".phone").css('display', 'none');
+  audio.pause();
+  earth.showCity(cityView[cityCount], 2000);
 });

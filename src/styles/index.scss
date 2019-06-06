@@ -1,7 +1,10 @@
 .play-btn {
   width: 300px;
   height: 300px;
-  background: radial-gradient( rgba(255, 0, 128, 0.8) 60%, rgba(255, 255, 255, 1) 62%);
+  background: radial-gradient(
+    rgba(255, 0, 128, 0.8) 60%,
+    rgba(255, 255, 255, 1) 62%
+  );
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -47,7 +50,7 @@
   animation-timing-function: steps;
   opacity: 1;
   border-radius: 50%;
-  border: 5px solid rgba(255, 255, 255, .75);
+  border: 5px solid rgba(255, 255, 255, 0.75);
   top: -33%;
   left: -33%;
   background: rgba(198, 16, 0, 0);
@@ -57,14 +60,14 @@
     -webkit-transform: scale(0.6);
     transform: scale(0.6);
     opacity: 1;
-    box-shadow: inset 0px 0px 25px 3px rgba(255, 255, 255, 0.75), 0px 0px 25px 10px rgba(255, 255, 255, 0.75);
+    box-shadow: inset 0px 0px 25px 3px rgba(255, 255, 255, 0.75),
+      0px 0px 25px 10px rgba(255, 255, 255, 0.75);
   }
   100% {
     -webkit-transform: scale(1, 1);
     transform: scale(1);
     opacity: 0;
     box-shadow: none;
-
   }
 }
 
@@ -76,11 +79,10 @@
       opacity: 1;
     }
     100% {
-      opacity: 0;  
+      opacity: 0;
     }
   }
 }
-
 .phone {
   position: fixed;
   width: 300px;
@@ -104,4 +106,31 @@
       }
   }
   }
+}
+#webgl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#video {
+  margin: auto;
+  box-shadow: 0px 0px 25px 5px rgba(104, 232, 236, 0.8);
+  border-radius: 5px;
+  overflow: hidden;
+}
+#videoBlock {
+  will-change: visibility, opacity;
+  z-index: 1000;
+  position: absolute;
+  background: black;
+  display: none;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  margin: auto;
+  width: 0%;
+  height: 0%;
+  transition-duration: 1s;
+  justify-content: center;
+  align-items: center;
 }

@@ -80,3 +80,28 @@
     }
   }
 }
+
+.phone {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  right: 5%;
+  top: 5%;
+
+  img {
+    height: 100%;;
+    animation: 0.1s tremor ease-out infinite;  
+    @keyframes tremor {
+      0%, 25% {
+          left: -1px;
+          -webkit-transform: translateX(-2%);
+          transform: translateX(-2%);
+      }
+      50%, 100% {
+          left: 10px;
+          -webkit-transform: translateX(2%);
+          transform: translateX(2%);
+      }
+  }
+  }
+}

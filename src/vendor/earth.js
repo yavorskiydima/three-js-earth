@@ -12,18 +12,22 @@ class Earth {
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
-		this.controls = new THREE.TrackballControls(this.camera);
+		this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 		this.interaction = new THREE.Interaction(this.renderer, this.scene, this.camera);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.getElementById(el).appendChild(this.renderer.domElement);
-		this.camera.position.x = -14.206810353469914;
-		this.camera.position.y = 10.785748001267004;
-		this.camera.position.z = -1.7872953451761553;
-		this.controls.maxDistance = 50;
-		this.controls.minDistance = 6;
+		this.controls.maxDistance = 40;
+		this.controls.minDistance = 10;
+		this.controls.maxPolarAngle = 1;
+		this.controls.minPolarAngle = 1;
+		this.controls.autoRotate = true;
+		this.controls.rotateSpeed = 6;
+		this.camera.position.x = -12.772980418090368;
+		this.camera.position.y = 8.304313035745599;
+		this.camera.position.z = -2.0294497591270346;
+		this.enableControls(false);
 		this.scene.add(new THREE.AmbientLight(0xffffff, 1));
 		this.star = createStars(90, 64);
-
 		this.scene.add(this.star)
 		this.earth = new THREE.Group();
 		this.sphere = createSphere(this.radius, this.segments);
@@ -31,9 +35,6 @@ class Earth {
 		this.earth.add(this.sphere);
 		this.earth.add(createClouds(this.radius, this.segments));
 		this.scene.add(this.earth);
-
-		this.move(0, 0.02, 0);
-		this.enableControls(false)
 		this.render();
 
 		function createSphere(radius, segments) {
@@ -85,6 +86,22 @@ class Earth {
 		this.renderer.render(this.scene, this.camera);
 	}
 
+	defaultCamera() {
+
+		new TWEEN.Tween(this.camera.position)
+			.to({ x: -12.772980418090368, y: 8.304313035745599, z: -2.0294497591270346 }, 4000)
+			.easing(TWEEN.Easing.Cubic.In)
+			.onComplete(() => {
+				this.controls.minDistance = 10;
+				this.controls.maxPolarAngle = 1;
+				this.controls.minPolarAngle = 1;
+				this.controls.autoRotate = false;
+				this.controls.rotateSpeed = 3;
+				this.enableControls(true);
+			})
+			.start()
+	}
+
 	move(x, y, z) {
 		this.isEarthRotation = (x === undefined) ? null : { x, y, z }
 	}
@@ -102,8 +119,10 @@ class Earth {
 			var rayIntersects = ray.intersectObject(this.sphere, true);
 			return Boolean(rayIntersects.length);
 		}
-
-		this.move();
+		this.controls.minDistance = 0;
+		this.controls.maxPolarAngle = Math.PI;
+		this.controls.minPolarAngle = 0;
+		this.controls.autoRotate = false;
 		this.enableControls(false);
 		const city = this.scene.getObjectByName(name)
 		city.material.color.r = 1;

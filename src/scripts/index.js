@@ -14,12 +14,13 @@ $(".play-btn").click(function () {
     $(".play-btn").addClass("end");
     setTimeout(() => {
         $(".play-btn").css('display', 'none');
-        earth.enableControls(true);
-        earth.move();
+        //earth.defaultCamera();
+        setTimeout(() => {
+            earth.showCity('Союз «Уральская ТПП»', 2000);
+        }, 4000);
+
     }, 2100);
 
 
 });
 
-
-//setTimeout(() => earth.showCity('Союз «Уральская ТПП»', 4000), 4000);

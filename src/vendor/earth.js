@@ -21,7 +21,7 @@ class Earth {
 		this.controls.maxPolarAngle = 1;
 		this.controls.minPolarAngle = 1;
 		this.controls.autoRotate = true;
-		this.controls.rotateSpeed = 6;
+		this.controls.autoRotateSpeed = 2;
 		this.camera.position.x = -12.772980418090368;
 		this.camera.position.y = 8.304313035745599;
 		this.camera.position.z = -2.0294497591270346;
@@ -95,8 +95,7 @@ class Earth {
 				this.controls.minDistance = 10;
 				this.controls.maxPolarAngle = 1;
 				this.controls.minPolarAngle = 1;
-				this.controls.autoRotate = false;
-				this.controls.rotateSpeed = 3;
+				this.controls.autoRotate = true;
 				this.enableControls(true);
 			})
 			.start()
@@ -106,6 +105,7 @@ class Earth {
 		this.isEarthRotation = (x === undefined) ? null : { x, y, z }
 	}
 	enableControls(flag) {
+		if (flag) this.controls.autoRotateSpeed = 0.3;
 		this.controls.enabled = flag;
 	}
 
@@ -128,7 +128,6 @@ class Earth {
 		city.material.color.r = 1;
 		city.material.color.g = 0;
 		city.material.color.b = 0;
-		console.log(city);
 		const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1)
 		console.log(checkCollision(XYZ))
 		if (checkCollision(XYZ)) {

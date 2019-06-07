@@ -1,11 +1,45 @@
 import "../styles/index.scss";
-import { city } from "../city";
 import { showVideo } from "./showVideoCallback";
+import { city } from "../city";
+
+const TIME_WAIT_PHONE = 5000;
+let cityCount = 0;
+const cityView = [
+  "Союз «Дальневосточная ТПП»",
+  "Союз «Няганская ТПП»",
+  "Союз «Санкт-Петербургская ТПП»",
+  "Союз «ТПП Воронежской области»",
+  "Союз «ТПП Ростовской области»",
+  "Союз «ТПП Саратовской области»",
+  "Союз «ТПП Ставропольского края»",
+  "Союз «Южно-Уральская ТПП»"
+];
+
+const audio = new Audio("/images/phone1.mp3");
+audio.loop = true;
+
 const earth = new Earth("webgl");
 
+$(".phone").css("display", "none");
+
 function callbackFunc(name) {
-  console.log(name);
-  showVideo("./images/videoplayback.mp4");
+  if (name !== cityView[cityCount]) return;
+  showVideo("./images/videoplayback.mp4", endVideo);
+
+  //эту функцию нужно засунуть в callback окончания видео
+  function endVideo() {
+    earth.defaultCamera();
+    cityCount++;
+    if (cityCount === cityView.length) {
+      //отображение кнопки запуска нейросети
+      console.log("finish");
+    } else {
+      setTimeout(() => {
+        $(".phone").css("display", "block");
+        audio.play();
+      }, TIME_WAIT_PHONE + 4000);
+    }
+  }
 }
 
 city.map(item =>
@@ -16,9 +50,18 @@ $(".play-btn").click(function() {
   $(".play-btn").addClass("end");
   setTimeout(() => {
     $(".play-btn").css("display", "none");
-    //earth.defaultCamera();
+    earth.enableControls(true);
     setTimeout(() => {
-      earth.showCity("Союз «Уральская ТПП»", 2000);
-    }, 1000);
+      $(".phone").css("display", "block");
+      audio.play();
+    }, TIME_WAIT_PHONE);
   }, 2100);
 });
+
+$(".phone").click(function() {
+  $(".phone").css("display", "none");
+  audio.pause();
+  earth.showCity(cityView[cityCount], 2000);
+});
+
+//add comment

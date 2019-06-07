@@ -24,6 +24,7 @@ function callbackFunc(name) {
     earth.defaultCamera();
     cityCount++;
     if (cityCount === cityView.length) {
+      //отображение кнопки запуска нейросети
       console.log('finish');
     } else {
       setTimeout(() => {

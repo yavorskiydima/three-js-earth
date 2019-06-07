@@ -17,18 +17,23 @@ $(".phone").css('display', 'none');
 
 function callbackFunc(name) {
   if (name !== cityView[cityCount]) return;
-  showVideo("./images/videoplayback.mp4");
-  //callback на окончание видео
-  earth.defaultCamera();
-  cityCount++;
-  if (cityCount === cityView.length) {
-    console.log('finish');
-  } else {
-    setTimeout(() => {
-      $(".phone").css('display', 'block');
-      audio.play();
-    }, TIME_WAIT_PHONE + 4000);
+  showVideo("./images/videoplayback.mp4", endVideo);
+
+  //эту функцию нужно засунуть в callback окончания видео
+  function endVideo() {
+    earth.defaultCamera();
+    cityCount++;
+    if (cityCount === cityView.length) {
+      console.log('finish');
+    } else {
+      setTimeout(() => {
+        $(".phone").css('display', 'block');
+        audio.play();
+      }, TIME_WAIT_PHONE + 4000);
+    }
   }
+
+
 }
 
 city.map(item => earth.newCity(item.name, { lat: item.lat, lon: item.lon }, callbackFunc));

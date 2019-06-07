@@ -5,7 +5,6 @@ import { city } from '../city';
 const TIME_WAIT_PHONE = 5000;
 let cityCount = 0;
 const cityView = ['Союз «Дальневосточная ТПП»', 'Союз «Няганская ТПП»', 'Союз «Санкт-Петербургская ТПП»', 'Союз «ТПП Воронежской области»', 'Союз «ТПП Ростовской области»', 'Союз «ТПП Саратовской области»', 'Союз «ТПП Ставропольского края»', 'Союз «Южно-Уральская ТПП»'];
-//const cityView = ['Союз «Дальневосточная ТПП»', 'Союз «Няганская ТПП»',];
 
 const audio = new Audio('/images/phone1.mp3');
 audio.loop = true;
@@ -58,4 +57,4 @@ $(".phone").click(function () {
   earth.showCity(cityView[cityCount], 2000);
 });
 
-//add comment
+city.forEach(item => earth.line(item.name, "Союз «Уральская ТПП»"));

@@ -35,6 +35,8 @@ class Earth {
 		this.earth.add(this.sphere);
 		this.earth.add(createClouds(this.radius, this.segments));
 		this.scene.add(this.earth);
+		this.graph = new THREE.Group();
+		this.scene.add(this.graph);
 		this.render();
 
 		function createSphere(radius, segments) {
@@ -80,6 +82,20 @@ class Earth {
 			this.earth.rotation.y += this.isEarthRotation.y;
 			this.earth.rotation.z += this.isEarthRotation.z;
 		}
+		this.graph.children.forEach(element => {
+			element.children.forEach(item => {
+				let point = element.curve.getPointAt(item.pos);
+				item.position.x = point.x;
+				item.position.y = point.y;
+				item.position.z = point.z;
+				if (item.pos > 0.19 && item.pos < 0.2) {
+					this.newNeuron(element);
+				} else if (item.pos > 1.1) {
+					element.remove(item);
+				}
+				item.pos += 0.01;
+			})
+		});
 		this.star.rotation.x += 0.0005
 
 		requestAnimationFrame(this.render);
@@ -199,4 +215,35 @@ class Earth {
 		return obj;
 	}
 
+	line(nameCity1, nameCity2) {
+		const city1 = this.scene.getObjectByName(nameCity1);
+		const city2 = this.scene.getObjectByName(nameCity2);
+		const dist = Math.sqrt((city1.position.x - city2.position.x) ** 2 + (city1.position.y - city2.position.y) ** 2 + (city1.position.z - city2.position.z) ** 2);
+		const p0 = city1.position;
+		const p1 = this.decodeCoord((city1.lat + city2.lat) / 2, (city1.lon + city2.lon) / 2, this.radius + (dist / 5))
+		const p2 = city2.position;
+
+		var curve = new THREE.CubicBezierCurve3(
+			new THREE.Vector3(p0.x, p0.y, p0.z),
+			new THREE.Vector3(p1.x, p1.y, p1.z),
+			new THREE.Vector3(p2.x, p2.y, p2.z),
+			new THREE.Vector3(p2.x, p2.y, p2.z),
+		);
+
+		let group = new THREE.Group();
+		group.curve = curve;
+
+		this.newNeuron(group)
+		this.graph.add(group);
+
+	}
+	newNeuron(group) {
+		let pos = group.curve.getPointAt(0);
+		let sphereGeometry = new THREE.SphereGeometry(0.02, 8, 8);
+		let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFF00FF });
+		let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		sphere.position.set(pos.x, pos.y, pos.z)
+		sphere.pos = 0;
+		group.add(sphere)
+	}
 }

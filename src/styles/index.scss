@@ -15,7 +15,7 @@
 }
 /* triangle */
 .play-btn::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   top: 50%;
@@ -34,7 +34,7 @@
 
 /* pulse wave */
 .play-btn:before {
-  content: "";
+  content: '';
   position: absolute;
   width: 160%;
   height: 160%;
@@ -91,20 +91,22 @@
   top: 5%;
 
   img {
-    height: 100%;;
-    animation: 0.1s tremor ease-out infinite;  
+    height: 100%;
+    animation: 0.1s tremor ease-out infinite;
     @keyframes tremor {
-      0%, 25% {
-          left: -1px;
-          -webkit-transform: translateX(-2%);
-          transform: translateX(-2%);
+      0%,
+      25% {
+        left: -1px;
+        -webkit-transform: translateX(-2%);
+        transform: translateX(-2%);
       }
-      50%, 100% {
-          left: 10px;
-          -webkit-transform: translateX(2%);
-          transform: translateX(2%);
+      50%,
+      100% {
+        left: 10px;
+        -webkit-transform: translateX(2%);
+        transform: translateX(2%);
       }
-  }
+    }
   }
 }
 #webgl {
@@ -133,4 +135,67 @@
   transition-duration: 1s;
   justify-content: center;
   align-items: center;
+}
+
+#webgl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#video {
+  margin: auto;
+  box-shadow: 0px 0px 25px 5px rgba(104, 232, 236, 0.8);
+  border-radius: 5px;
+  overflow: hidden;
+}
+#videoBlock {
+  will-change: visibility, opacity;
+  z-index: 1000;
+  position: absolute;
+  background: black;
+  display: none;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  margin: auto;
+  width: 0%;
+  height: 0%;
+  transition-duration: 1s;
+  justify-content: center;
+  align-items: center;
+}
+a.finalButton {
+  z-index: 999999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -45px;
+  margin-left: -225px;
+  width: 450px;
+  overflow: hidden;
+  height: 90px;
+  text-decoration: none;
+  border-radius: 7px;
+  color: #a675b3;
+  text-align: center;
+  opacity: 0;
+  line-height: 60px;
+  display: none;
+  font: normal 22px arial;
+  box-shadow: inset 0 1px 1px rgba(111, 55, 125, 0.8),
+    inset 0 -1px 0px rgba(63, 59, 113, 0.2), 0 9px 16px 0 rgba(0, 0, 0, 0.3),
+    0 4px 3px 0 rgba(0, 0, 0, 0.3), 0 0 0 1px #150a1e;
+  background-image: linear-gradient(#3b2751, #271739);
+  text-shadow: 0 0 21px rgba(223, 206, 228, 0.5), 0 -1px 0 #311d47;
+  transition: all 1.3s ease-out;
+}
+a.finalButton span {
+  height: 90px;
+  line-height: 90px;
+}
+a.finalButton:hover,
+a.finalButton:focus {
+  color: #fff;
+  text-shadow: 0 0 21px rgba(223, 206, 228, 0.5),
+    0 0 10px rgba(223, 206, 228, 0.4), 0 0 2px #2a153c;
 }

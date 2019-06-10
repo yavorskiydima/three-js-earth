@@ -16,7 +16,6 @@ export const showVideo = videoUrl => {
   }, 100);
 };
 export const hideVideo = () => {
-  console.log('ensd');
   video.removeEventListener('ended', hideVideo);
   document.removeEventListener('keyup', stopOnEsc);
   videoBlock.style.opacity = '0';

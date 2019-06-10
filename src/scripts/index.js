@@ -64,4 +64,10 @@ $('.phone').click(function() {
   earth.showCity(cityView[cityCount], 2000);
 });
 
-//add comment
+$('#finalButton').click(function() {
+  $('#finalButton').css('opacity', '0');
+  setTimeout(() => {
+    $('#finalButton').css('display', 'none');
+    city.forEach(item => earth.line(item.name, 'Союз «Уральская ТПП»'));
+  }, 1300);
+});

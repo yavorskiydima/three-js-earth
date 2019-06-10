@@ -1,4 +1,5 @@
 import '../styles/index.scss';
+import { Earth } from './earth';
 import { showVideo, showFinalButton } from './showVideoCallback';
 import { city } from '../city';
 const TIME_WAIT_PHONE = 5000;

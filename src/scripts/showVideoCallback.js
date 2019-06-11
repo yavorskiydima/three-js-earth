@@ -1,32 +1,39 @@
 import { endVideo } from './index';
+import { earth } from './index';
 const videoBlock = document.getElementById('videoBlock');
 const video = document.getElementById('video');
 const finalButton = document.getElementById('finalButton');
 export const showVideo = videoUrl => {
   video.setAttribute('src', videoUrl);
   videoBlock.style.display = 'flex';
+  earth.stopRender();
   setTimeout(() => {
-    video.play();
     video.addEventListener('ended', hideVideo);
     document.addEventListener('keyup', stopOnEsc);
+    videoBlock.style.transitionDuration = '0.8s';
+    videoBlock.style.transform = 'scale(1)';
     videoBlock.style.opacity = '1';
-    videoBlock.style.width = '100%';
-    videoBlock.style.height = '100%';
-    videoBlock.style.visibility = 'visible';
   }, 100);
+  setTimeout(() => {
+    videoBlock.style.background = 'black';
+    video.play();
+  }, 900);
 };
 export const hideVideo = () => {
   video.removeEventListener('ended', hideVideo);
   document.removeEventListener('keyup', stopOnEsc);
-  videoBlock.style.opacity = '0';
-  videoBlock.style.width = '0';
-  videoBlock.style.height = '0';
-  videoBlock.style.visibility = 'hidden';
+  videoBlock.style.background = 'none';
   setTimeout(() => {
-    videoBlock.style.display = 'none';
+    videoBlock.style.transform = 'scale(0.1)';
+    videoBlock.style.opacity = '0';
+    earth.startRender();
     stopVideo();
     endVideo();
-  }, 1000);
+  }, 800);
+  setTimeout(() => {
+    videoBlock.style.display = 'none';
+    videoBlock.style.transitionDuration = '0';
+  }, 1600);
 };
 
 function stopVideo() {

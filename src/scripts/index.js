@@ -18,7 +18,7 @@ const cityView = [
 const audio = new Audio('/images/phone1.mp3');
 audio.loop = true;
 
-const earth = new Earth('webgl');
+export const earth = new Earth('webgl');
 
 $('.phone').css('display', 'none');
 

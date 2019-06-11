@@ -1,7 +1,7 @@
 export class Earth {
   radius = 5;
   segments = 64;
-
+  isRender = true;
   isEarthRotation = null;
 
   constructor(el) {
@@ -84,7 +84,13 @@ export class Earth {
       );
     }
   }
-
+  stopRender = () => {
+    this.isRender = false;
+  };
+  startRender = () => {
+    this.isRender = true;
+    requestAnimationFrame(this.render);
+  };
   render = () => {
     this.controls.update();
     TWEEN.update();
@@ -110,7 +116,7 @@ export class Earth {
     });
     this.star.rotation.x += 0.0005;
 
-    requestAnimationFrame(this.render);
+    if (this.isRender) requestAnimationFrame(this.render);
     this.renderer.render(this.scene, this.camera);
   };
 

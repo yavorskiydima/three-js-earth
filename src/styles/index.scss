@@ -85,26 +85,72 @@
 }
 .phone {
   position: fixed;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   right: 5%;
   top: 5%;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 128, 0.8);
+  border: 10px solid white;
+  &:before {
+    content: '';
+    position: absolute;
+    height: 110%;
+    width: 110%;
+    left: -10px;
+    top: -10px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: waves 2s ease-out infinite;
+    @keyframes waves {
+      0% {
+        border: 10px solid white;
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        border: 0px solid white;
+        transform: scale(1.5);
+      }
+    }
+  }
 
   img {
-    height: 100%;
-    animation: 0.1s tremor ease-out infinite;
+    width: 60%;
+    margin-left: 40px;
+    margin-top: 40px;
+    animation: 0.5s tremor ease-out infinite;
     @keyframes tremor {
-      0%,
-      25% {
-        left: -1px;
-        -webkit-transform: translateX(-2%);
+      0% {
+        transform: translateX(0);
+      }
+      11% {
+        transform: translateX(0);
+      }
+      22% {
+        transform: translateX(2%);
+      }
+      33% {
         transform: translateX(-2%);
       }
-      50%,
-      100% {
-        left: 10px;
-        -webkit-transform: translateX(2%);
+      44% {
         transform: translateX(2%);
+      }
+      55% {
+        transform: translateX(-2%);
+      }
+      66% {
+        transform: translateX(2%);
+      }
+      77% {
+        transform: translateX(0);
+      }
+      88% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(0);
       }
     }
   }

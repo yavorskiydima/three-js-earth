@@ -1,4 +1,4 @@
-class Earth {
+export class Earth {
   radius = 5;
   segments = 64;
   isRender = true;

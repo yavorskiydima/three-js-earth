@@ -55,7 +55,7 @@ export class Earth {
       return new THREE.Mesh(
         new THREE.SphereGeometry(radius, segments, segments),
         new THREE.MeshPhongMaterial({
-          map: new THREE.TextureLoader().load('images/2_no_clouds_4k.jpg'),
+          map: new THREE.TextureLoader().load('images/2_no_clouds_8k.jpg'),
           bumpMap: new THREE.TextureLoader().load('images/elev_bump_4k.jpg'),
           bumpScale: 0.005,
           specularMap: new THREE.TextureLoader().load('images/water_4k.png'),
@@ -251,8 +251,8 @@ export class Earth {
     const city2 = this.scene.getObjectByName(nameCity2);
     const dist = Math.sqrt(
       (city1.position.x - city2.position.x) ** 2 +
-        (city1.position.y - city2.position.y) ** 2 +
-        (city1.position.z - city2.position.z) ** 2,
+      (city1.position.y - city2.position.y) ** 2 +
+      (city1.position.z - city2.position.z) ** 2,
     );
     const p0 = city1.position;
     const p1 = this.decodeCoord(

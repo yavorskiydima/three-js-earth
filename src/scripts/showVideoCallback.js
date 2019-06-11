@@ -1,5 +1,6 @@
 import { endVideo } from './index';
 import { earth } from './index';
+import { city } from '../city';
 const videoBlock = document.getElementById('videoBlock');
 const video = document.getElementById('video');
 const finalButton = document.getElementById('finalButton');
@@ -35,7 +36,13 @@ export const hideVideo = () => {
     videoBlock.style.transitionDuration = '0';
   }, 1600);
 };
-
+export function showFinalButton() {
+  finalButton.style.display = 'block';
+  setTimeout(() => {
+    finalButton.style.opacity = '1';
+    finalButton.addEventListener('click', activateNet);
+  }, 4000);
+}
 function stopVideo() {
   video.pause();
   video.currentTime = 0;
@@ -45,9 +52,11 @@ function stopOnEsc(e) {
     hideVideo(endVideo);
   }
 }
-export function showFinalButton() {
-  finalButton.style.display = 'block';
+function activateNet() {
+  finalButton.style.opacity = '0';
   setTimeout(() => {
-    finalButton.style.opacity = '1';
-  }, 4000);
+    finalButton.style.display = 'none';
+    finalButton.removeEventListener('click', activateNet);
+    city.forEach(item => earth.line(item.name, 'Союз «Уральская ТПП»')); // Активация нейросети
+  }, 1300);
 }

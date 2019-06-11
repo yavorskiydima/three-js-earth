@@ -23,20 +23,22 @@ export const earth = new Earth('webgl');
 $('.phone').css('display', 'none');
 
 function callbackFunc(name) {
+  console.log(name);
   if (name !== cityView[cityCount]) return;
   showVideo('./images/videoplayback.mp4');
 
   //эту функцию нужно засунуть в callback окончания видео
 }
 export function endVideo() {
-  earth.defaultCamera();
   cityCount++;
   console.log(cityCount);
-  if (cityCount === 2) {
+  if (cityCount === 1) {
     //отображение кнопки запуска нейросети cityView.length
+    earth.showRus();
     showFinalButton();
     console.log('finish');
   } else {
+    earth.defaultCamera();
     setTimeout(() => {
       $('.phone').css('display', 'block');
       audio.play();
@@ -47,7 +49,7 @@ city.forEach(item => {
   earth.newCity(item.name, { lat: item.lat, lon: item.lon }, callbackFunc);
 });
 
-$('.play-btn').click(function() {
+$('.play-btn').click(function () {
   $('.play-btn').addClass('end');
   setTimeout(() => {
     $('.play-btn').css('display', 'none');
@@ -59,7 +61,7 @@ $('.play-btn').click(function() {
   }, 2100);
 });
 
-$('.phone').click(function() {
+$('.phone').click(function () {
   $('.phone').css('display', 'none');
   audio.pause();
   earth.showCity(cityView[cityCount], 2000);

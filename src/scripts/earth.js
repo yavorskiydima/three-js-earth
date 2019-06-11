@@ -2,7 +2,8 @@ export class Earth {
   radius = 5;
   segments = 64;
   isRender = true;
-  isEarthRotation = null;
+  showRussia = false;
+  isPluseRotation = true;
 
   constructor(el) {
     this.init(el);
@@ -30,8 +31,8 @@ export class Earth {
     document.getElementById(el).appendChild(this.renderer.domElement);
     this.controls.maxDistance = 40;
     this.controls.minDistance = 10;
-    this.controls.maxPolarAngle = 1;
-    this.controls.minPolarAngle = 1;
+    this.controls.maxPolarAngle = 0.7;
+    this.controls.minPolarAngle = 0.7;
     this.controls.autoRotate = true;
     this.controls.autoRotateSpeed = 2;
     this.camera.position.x = -12.772980418090368;
@@ -48,7 +49,7 @@ export class Earth {
     this.earth.add(createClouds(this.radius, this.segments));
     this.scene.add(this.earth);
     this.graph = new THREE.Group();
-    this.scene.add(this.graph);
+    this.earth.add(this.graph);
     this.render();
 
     function createSphere(radius, segments) {
@@ -92,14 +93,14 @@ export class Earth {
     requestAnimationFrame(this.render);
   };
   render = () => {
+    if (this.showRussia) {
+      this.isPluseRotation ? this.earth.rotation.y += 0.001 : this.earth.rotation.y -= 0.001;
+      if (this.earth.rotation.y > 0.5) { this.isPluseRotation = false }
+      else if (this.earth.rotation.y < -0.5) { this.isPluseRotation = true }
+    }
     this.controls.update();
     TWEEN.update();
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-    if (this.isEarthRotation) {
-      this.earth.rotation.x += this.isEarthRotation.x;
-      this.earth.rotation.y += this.isEarthRotation.y;
-      this.earth.rotation.z += this.isEarthRotation.z;
-    }
     this.graph.children.forEach(element => {
       element.children.forEach(item => {
         let point = element.curve.getPointAt(item.pos);
@@ -141,9 +142,6 @@ export class Earth {
       .start();
   }
 
-  move(x, y, z) {
-    this.isEarthRotation = x === undefined ? null : { x, y, z };
-  }
   enableControls(flag) {
     if (flag) this.controls.autoRotateSpeed = 0.3;
     this.controls.enabled = flag;
@@ -278,7 +276,7 @@ export class Earth {
   newNeuron(group) {
     let pos = group.curve.getPointAt(0);
     let sphereGeometry = new THREE.SphereGeometry(0.02, 8, 8);
-    let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+    let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x771A6B });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
@@ -287,8 +285,27 @@ export class Earth {
   newLine(group) {
     let points = group.curve.getPoints(50);
     var geometry = new THREE.BufferGeometry().setFromPoints(points);
-    var material = new THREE.LineBasicMaterial({ color: 0xff0080 });
+    var material = new THREE.LineBasicMaterial({ color: 0x771A6B });
     var curveObject = new THREE.Line(geometry, material);
-    this.scene.add(curveObject);
+    this.earth.add(curveObject);
+  }
+  showRus() {
+    this.enableControls(false);
+    new TWEEN.Tween(this.camera.position)
+      .to(
+        {
+          x: -6.811165877716731,
+          y: 8.20925909190832,
+          z: -1.1913053380928085,
+        },
+        2000,
+      )
+      .easing(TWEEN.Easing.Cubic.In)
+      .onComplete(() => {
+        this.controls.maxPolarAngle = 0.7;
+        this.controls.minPolarAngle = 0.7;
+        this.showRussia = true
+      })
+      .start();
   }
 }

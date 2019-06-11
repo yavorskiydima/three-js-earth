@@ -169,7 +169,6 @@ export class Earth {
     city.material.color.g = 0;
     city.material.color.b = 0;
     const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1);
-    console.log(checkCollision(XYZ));
     if (checkCollision(XYZ)) {
       let srX = (this.camera.position.x + XYZ.x) * 2;
       let srY = (this.camera.position.y + XYZ.y) * 2;
@@ -273,6 +272,7 @@ export class Earth {
     group.curve = curve;
 
     this.newNeuron(group);
+    this.newLine(group);
     this.graph.add(group);
   }
   newNeuron(group) {
@@ -283,5 +283,12 @@ export class Earth {
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
     group.add(sphere);
+  }
+  newLine(group) {
+    let points = group.curve.getPoints(50);
+    var geometry = new THREE.BufferGeometry().setFromPoints(points);
+    var material = new THREE.LineBasicMaterial({ color: 0xff0080 });
+    var curveObject = new THREE.Line(geometry, material);
+    this.scene.add(curveObject);
   }
 }

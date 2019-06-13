@@ -163,9 +163,9 @@ export class Earth {
     this.controls.autoRotate = false;
     this.enableControls(false);
     const city = this.scene.getObjectByName(name);
-    city.material.color.r = 1;
-    city.material.color.g = 0;
-    city.material.color.b = 0;
+    //city.material.color.r = 0.4648
+    //city.material.color.g = 0.1015;
+    //city.material.color.b = 0.4179;
     const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1);
     if (checkCollision(XYZ)) {
       let srX = (this.camera.position.x + XYZ.x) * 2;
@@ -216,8 +216,8 @@ export class Earth {
     }
   }
   newCity(name, coord, func) {
-    let sphereGeometry = new THREE.SphereGeometry(0.02, 16, 16);
-    let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    let sphereGeometry = new THREE.SphereGeometry(0.03, 16, 16);;
+    let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x771A6B });
     let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = name;
     earthMesh.lat = coord.lat;

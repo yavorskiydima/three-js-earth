@@ -4,6 +4,9 @@ export class Earth {
   isRender = true;
   showRussia = false;
   isPluseRotation = true;
+  colorCity = 0x771A6B;
+  colorGraphLine = 0x771A6B;
+  colorGraphPoint = 0x771A6B;
 
   constructor(el) {
     this.init(el);
@@ -95,7 +98,7 @@ export class Earth {
   render = () => {
     if (this.showRussia) {
       this.isPluseRotation ? this.earth.rotation.y += 0.001 : this.earth.rotation.y -= 0.001;
-      if (this.earth.rotation.y > 0.5) { this.isPluseRotation = false }
+      if (this.earth.rotation.y > 0.3) { this.isPluseRotation = false }
       else if (this.earth.rotation.y < -0.5) { this.isPluseRotation = true }
     }
     this.controls.update();
@@ -104,11 +107,15 @@ export class Earth {
     this.graph.children.forEach(element => {
       element.children.forEach(item => {
         let point = element.curve.getPointAt(item.pos);
+        const len = element.curve.getLength() * item.pos;
         item.position.x = point.x;
         item.position.y = point.y;
         item.position.z = point.z;
-        if (item.pos > 0.19 && item.pos < 0.2) {
+
+
+        if (len > 0.1 && !item.checked) {
           this.newNeuron(element);
+          item.checked = true
         } else if (item.pos > 1.1) {
           element.remove(item);
         }
@@ -134,8 +141,8 @@ export class Earth {
       .easing(TWEEN.Easing.Cubic.In)
       .onComplete(() => {
         this.controls.minDistance = 10;
-        this.controls.maxPolarAngle = 1;
-        this.controls.minPolarAngle = 1;
+        this.controls.maxPolarAngle = 0.7;
+        this.controls.minPolarAngle = 0.7;
         this.controls.autoRotate = true;
         this.enableControls(true);
       })
@@ -145,6 +152,7 @@ export class Earth {
   enableControls(flag) {
     if (flag) this.controls.autoRotateSpeed = 0.3;
     this.controls.enabled = flag;
+    this.controls.autoRotateSpeed = 0;
   }
 
   showCity(name, time) {
@@ -163,9 +171,9 @@ export class Earth {
     this.controls.autoRotate = false;
     this.enableControls(false);
     const city = this.scene.getObjectByName(name);
-    //city.material.color.r = 0.4648
-    //city.material.color.g = 0.1015;
-    //city.material.color.b = 0.4179;
+    city.material.color.r = 1
+    city.material.color.g = 1;
+    city.material.color.b = 1;
     const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1);
     if (checkCollision(XYZ)) {
       let srX = (this.camera.position.x + XYZ.x) * 2;
@@ -198,26 +206,9 @@ export class Earth {
     }
   }
 
-  axis() {
-    //синий
-    this.scene.add(line([0, 0, 0], [100, 0, 0], 0x0000ff));
-    //красный
-    this.scene.add(line([0, 0, 0], [0, 100, 0], 0xff0000));
-    //белый
-    this.scene.add(line([0, 0, 0], [0, 0, 100], 0xffffff));
-
-    function line(start, finish, color) {
-      var geometry = new THREE.Geometry();
-      geometry.vertices.push(
-        new THREE.Vector3(...start),
-        new THREE.Vector3(...finish),
-      );
-      return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color }));
-    }
-  }
   newCity(name, coord, func) {
     let sphereGeometry = new THREE.SphereGeometry(0.03, 16, 16);;
-    let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x771A6B });
+    let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorCity });
     let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = name;
     earthMesh.lat = coord.lat;
@@ -276,7 +267,7 @@ export class Earth {
   newNeuron(group) {
     let pos = group.curve.getPointAt(0);
     let sphereGeometry = new THREE.SphereGeometry(0.02, 8, 8);
-    let sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x771A6B });
+    let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
@@ -285,7 +276,7 @@ export class Earth {
   newLine(group) {
     let points = group.curve.getPoints(50);
     var geometry = new THREE.BufferGeometry().setFromPoints(points);
-    var material = new THREE.LineBasicMaterial({ color: 0x771A6B });
+    var material = new THREE.LineBasicMaterial({ color: this.colorGraphLine });
     var curveObject = new THREE.Line(geometry, material);
     this.earth.add(curveObject);
   }
@@ -294,16 +285,14 @@ export class Earth {
     new TWEEN.Tween(this.camera.position)
       .to(
         {
-          x: -6.811165877716731,
-          y: 8.20925909190832,
-          z: -1.1913053380928085,
+          x: -4.608861742362821,
+          y: 8.306457425121318,
+          z: -1.8960018165252785,
         },
         2000,
       )
       .easing(TWEEN.Easing.Cubic.In)
       .onComplete(() => {
-        this.controls.maxPolarAngle = 0.7;
-        this.controls.minPolarAngle = 0.7;
         this.showRussia = true
       })
       .start();

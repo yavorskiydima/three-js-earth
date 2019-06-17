@@ -23,7 +23,6 @@ export const earth = new Earth('webgl');
 $('.phone').css('display', 'none');
 
 function callbackFunc(name) {
-  console.log(name);
   if (name !== cityView[cityCount]) return;
   showVideo('./images/videoplayback.mp4');
 
@@ -31,12 +30,10 @@ function callbackFunc(name) {
 }
 export function endVideo() {
   cityCount++;
-  console.log(cityCount);
   if (cityCount === 8) {
     //отображение кнопки запуска нейросети cityView.length
     earth.showRus();
     showFinalButton();
-    console.log('finish');
   } else {
     earth.defaultCamera();
     setTimeout(() => {

@@ -105,7 +105,6 @@ export class Earth {
     requestAnimationFrame(this.render);
   };
   render = () => {
-    console.log(this.camera.position);
     if (this.showRussia) {
       this.isPluseRotation ? this.earth.rotation.y += 0.001 : this.earth.rotation.y -= 0.001;
       if (this.earth.rotation.y > 0.3) { this.isPluseRotation = false }

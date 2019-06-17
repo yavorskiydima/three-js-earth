@@ -4,10 +4,10 @@ export class Earth {
   isRender = true;
   showRussia = false;
   isPluseRotation = true;
-  //colorCity = 0x6ab90a;
   colorCity = 0x07deb7;
-  colorGraphLine = 0x771A6B;
-  colorGraphPoint = 0x771A6B;
+  colorGraphLine = 0x06DEC1;
+  colorGraphPoint = 0x23A8BB;
+  //colorGraphPoint = 0xFFFFFF;
 
   linkShowCity = null;
 
@@ -105,6 +105,7 @@ export class Earth {
     requestAnimationFrame(this.render);
   };
   render = () => {
+    console.log(this.camera.position);
     if (this.showRussia) {
       this.isPluseRotation ? this.earth.rotation.y += 0.001 : this.earth.rotation.y -= 0.001;
       if (this.earth.rotation.y > 0.3) { this.isPluseRotation = false }
@@ -120,9 +121,7 @@ export class Earth {
       this.linkShowCity.scale.x += speed
       this.linkShowCity.scale.y += speed;
       this.linkShowCity.scale.z += speed;
-
       this.newColor(this.linkShowCity, this.palitre)
-
     }
     this.controls.update();
     TWEEN.update();
@@ -135,14 +134,13 @@ export class Earth {
         item.position.y = point.y;
         item.position.z = point.z;
 
-
         if (len > 0.1 && !item.checked) {
           this.newNeuron(element);
           item.checked = true
         } else if (item.pos > 1.1) {
           element.remove(item);
         }
-        item.pos += 0.01;
+        item.pos += 1 / element.curve.getLength() * 0.01;
       });
     });
     this.star.rotation.x += 0.0005;
@@ -174,9 +172,9 @@ export class Earth {
     new TWEEN.Tween(this.camera.position)
       .to(
         {
-          x: -12.772980418090368,
-          y: 8.304313035745599,
-          z: -2.0294497591270346,
+          x: -6.403447302020722,
+          y: 8.209259091908317,
+          z: -2.609032708224378,
         },
         4000,
       )
@@ -194,7 +192,6 @@ export class Earth {
   enableControls(flag) {
     if (flag) this.controls.autoRotateSpeed = 0.3;
     this.controls.enabled = flag;
-    this.controls.autoRotateSpeed = 0;
   }
 
   showCity(name, time) {
@@ -287,7 +284,7 @@ export class Earth {
     const p1 = this.decodeCoord(
       (city1.lat + city2.lat) / 2,
       (city1.lon + city2.lon) / 2,
-      this.radius + dist / 2,
+      this.radius + dist / 4,
     );
     const p2 = city2.position;
 

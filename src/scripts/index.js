@@ -32,7 +32,7 @@ function callbackFunc(name) {
 export function endVideo() {
   cityCount++;
   console.log(cityCount);
-  if (cityCount === 1) {
+  if (cityCount === 8) {
     //отображение кнопки запуска нейросети cityView.length
     earth.showRus();
     showFinalButton();

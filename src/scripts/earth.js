@@ -4,9 +4,12 @@ export class Earth {
   isRender = true;
   showRussia = false;
   isPluseRotation = true;
-  colorCity = 0x771A6B;
+  //colorCity = 0x6ab90a;
+  colorCity = 0x07deb7;
   colorGraphLine = 0x771A6B;
   colorGraphPoint = 0x771A6B;
+
+  linkShowCity = null;
 
   constructor(el) {
     this.init(el);
@@ -53,7 +56,13 @@ export class Earth {
     this.scene.add(this.earth);
     this.graph = new THREE.Group();
     this.earth.add(this.graph);
+    this.city = new THREE.Group();
+    this.earth.add(this.city);
     this.render();
+
+    const startRGB = { r: 0, g: 160, b: 227 };
+    const endRGB = { r: 176, g: 203, b: 31 };
+    this.palitre = Array(100).fill(null).map((item, i) => ({ r: startRGB.r + (endRGB.r - startRGB.r) / 100 * i, g: startRGB.g + (endRGB.g - startRGB.g) / 100 * i, b: startRGB.b + (endRGB.b - startRGB.b) / 100 * i }))
 
     function createSphere(radius, segments) {
       return new THREE.Mesh(
@@ -101,6 +110,20 @@ export class Earth {
       if (this.earth.rotation.y > 0.3) { this.isPluseRotation = false }
       else if (this.earth.rotation.y < -0.5) { this.isPluseRotation = true }
     }
+    if (this.linkShowCity) {
+      if (this.linkShowCity.scale.x < 1) {
+        this.linkShowCity.scale.scaleUp = true;
+      } else if (this.linkShowCity.scale.x > 2) {
+        this.linkShowCity.scale.scaleUp = false;
+      }
+      const speed = this.linkShowCity.scale.scaleUp ? 0.05 : -0.03
+      this.linkShowCity.scale.x += speed
+      this.linkShowCity.scale.y += speed;
+      this.linkShowCity.scale.z += speed;
+
+      this.newColor(this.linkShowCity, this.palitre)
+
+    }
     this.controls.update();
     TWEEN.update();
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -128,7 +151,26 @@ export class Earth {
     this.renderer.render(this.scene, this.camera);
   };
 
+  newColor(city, palitre) {
+    city.material.color.r = palitre[city.material.color.count].r / 255;
+    city.material.color.g = palitre[city.material.color.count].g / 255;
+    city.material.color.b = palitre[city.material.color.count].b / 255;
+
+    city.material.color.count += city.material.color.up ? 1 : -1;
+    if (city.material.color.count === 99) { city.material.color.up = false }
+    else if (city.material.color.count === 0) { city.material.color.up = true };
+  }
+
+  defaultCity() {
+    this.linkShowCity.material.color.setHex(this.colorCity);
+    this.linkShowCity.scale.x = 1;
+    this.linkShowCity.scale.y = 1;
+    this.linkShowCity.scale.z = 1;
+    this.linkShowCity = null;
+  }
+
   defaultCamera() {
+    this.defaultCity();
     new TWEEN.Tween(this.camera.position)
       .to(
         {
@@ -171,9 +213,9 @@ export class Earth {
     this.controls.autoRotate = false;
     this.enableControls(false);
     const city = this.scene.getObjectByName(name);
-    city.material.color.r = 1
-    city.material.color.g = 1;
-    city.material.color.b = 1;
+    city.material.color.count = Math.floor(Math.random() * 100) - 1;
+    city.material.color.up = true;
+    this.linkShowCity = city;
     const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1);
     if (checkCollision(XYZ)) {
       let srX = (this.camera.position.x + XYZ.x) * 2;
@@ -207,7 +249,7 @@ export class Earth {
   }
 
   newCity(name, coord, func) {
-    let sphereGeometry = new THREE.SphereGeometry(0.03, 16, 16);;
+    let sphereGeometry = new THREE.SphereGeometry(0.03, 32, 32);;
     let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorCity });
     let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = name;
@@ -220,8 +262,7 @@ export class Earth {
     earthMesh.on('click', ev => {
       return func(ev.data.target.name);
     });
-
-    this.earth.add(earthMesh);
+    this.city.add(earthMesh);
   }
 
   decodeCoord(lat, lon, r) {
@@ -246,7 +287,7 @@ export class Earth {
     const p1 = this.decodeCoord(
       (city1.lat + city2.lat) / 2,
       (city1.lon + city2.lon) / 2,
-      this.radius + dist / 5,
+      this.radius + dist / 2,
     );
     const p2 = city2.position;
 
@@ -281,6 +322,7 @@ export class Earth {
     this.earth.add(curveObject);
   }
   showRus() {
+    this.defaultCity();
     this.enableControls(false);
     new TWEEN.Tween(this.camera.position)
       .to(

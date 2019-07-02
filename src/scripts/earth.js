@@ -4,9 +4,10 @@ export class Earth {
   isRender = true;
   showRussia = false;
   isPluseRotation = true;
-  colorCity = 0x07deb7;
-  colorGraphLine = 0x06DEC1;
-  colorGraphPoint = 0x23A8BB;
+  colorCity = 0xd57a79;
+  colorGraphLine1 = 0x0c69b5;
+  colorGraphLine2 = 0x984183;
+  colorGraphPoint = 0x2B63A8;
   //colorGraphPoint = 0xFFFFFF;
 
   linkShowCity = null;
@@ -60,8 +61,8 @@ export class Earth {
     this.earth.add(this.city);
     this.render();
 
-    const startRGB = { r: 0, g: 160, b: 227 };
-    const endRGB = { r: 176, g: 203, b: 31 };
+    const startRGB = { r: 179, g: 116, b: 148 };
+    const endRGB = { r: 234, g: 194, b: 204 };
     this.palitre = Array(100).fill(null).map((item, i) => ({ r: startRGB.r + (endRGB.r - startRGB.r) / 100 * i, g: startRGB.g + (endRGB.g - startRGB.g) / 100 * i, b: startRGB.b + (endRGB.b - startRGB.b) / 100 * i }))
 
     function createSphere(radius, segments) {
@@ -139,7 +140,7 @@ export class Earth {
         } else if (item.pos > 1.1) {
           element.remove(item);
         }
-        item.pos += 1 / element.curve.getLength() * 0.01;
+        item.pos += 1 / element.curve.getLength() * 0.008;
       });
     });
     this.star.rotation.x += 0.0005;
@@ -313,7 +314,7 @@ export class Earth {
   newLine(group) {
     let points = group.curve.getPoints(50);
     var geometry = new THREE.BufferGeometry().setFromPoints(points);
-    var material = new THREE.LineBasicMaterial({ color: this.colorGraphLine });
+    var material = new THREE.LineBasicMaterial({ color: Math.floor(Math.random() * 2) ? this.colorGraphLine1 : this.colorGraphLine2 });
     var curveObject = new THREE.Line(geometry, material);
     this.earth.add(curveObject);
   }

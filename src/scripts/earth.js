@@ -5,8 +5,7 @@ export class Earth {
   showRussia = false;
   isPluseRotation = true;
   colorCity = 0x963396;
-  colorGraphLine1 = 0x0c69b5;
-  colorGraphLine2 = 0x984183;
+  colorGraphLine = 0x0c69b5;
   colorGraphPoint = 0x2B63A8;
   //colorGraphPoint = 0xFFFFFF;
 
@@ -130,13 +129,14 @@ export class Earth {
         item.position.y = point.y;
         item.position.z = point.z;
 
-        if (len > 0.1 && !item.checked) {
+        if (!item.checked && len > item.new) {
           this.newNeuron(element);
           item.checked = true
         } else if (item.pos > 1.1) {
           element.remove(item);
         }
-        item.pos += 1 / element.curve.getLength() * 0.008;
+        //item.pos += 1 / element.curve.getLength() * 0.008;
+        item.pos += 1 / element.curve.getLength() * item.speed;
       });
     });
     this.star.rotation.x += 0.0005;
@@ -312,12 +312,14 @@ export class Earth {
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
+    sphere.speed = Math.random() * (0.02 - 0.008) + 0.008;
+    sphere.new = Math.random() * (0.2 - 0.05) + 0.05;
     group.add(sphere);
   }
   newLine(group) {
     let points = group.curve.getPoints(50);
     var geometry = new THREE.BufferGeometry().setFromPoints(points);
-    var material = new THREE.LineBasicMaterial({ color: Math.floor(Math.random() * 2) ? this.colorGraphLine1 : this.colorGraphLine2 });
+    var material = new THREE.LineBasicMaterial({ color: this.colorGraphLine });
     var curveObject = new THREE.Line(geometry, material);
     this.earth.add(curveObject);
   }

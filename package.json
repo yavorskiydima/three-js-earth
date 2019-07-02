@@ -4,7 +4,7 @@
   "description": "three-earth-api",
   "scripts": {
     "build": "webpack --config webpack/webpack.config.prod.js  --colors",
-    "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js"
+    "start": "webpack-dev-server --open --host 0.0.0.0 --config webpack/webpack.config.dev.js"
   },
   "repository": {
     "type": "git",

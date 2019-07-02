@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
-    />
-    <title>webpack starterkit</title>
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        background-color: #000;
-      }
-    </style>
-  </head>
 
-  <body>
-    <a class="play-btn" href="#"></a>
-    <div class="phone">
-      <img src="images/phone.png" />
-    </div>
-    <a class="finalButton" id="finalButton" href="#"
-      ><span>Активировать нейросеть</span></a
-    >
-    <div id="webgl">
-      <div id="videoBlock">
-        <video id="video" width="80%" controls>
-          <source e="video/mp4" codecs="avc1.42E01E, mp4a.40.2" />
-        </video>
-      </div>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+  <title>webpack starterkit</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
 
-    <script src="vendor/jquery.js"></script>
-    <script src="vendor/three.min.js"></script>
-    <script src="vendor/three.interaction.js"></script>
-    <script src="vendor/TrackballControls.js"></script>
-    <script src="vendor/OrbitControls.js"></script>
-    <script src="vendor/Tween.js"></script>
-  </body>
+<body>
+  <div class="logo">
+    <img class="start" src="images/start.jpg" />
+  </div>
+  <div class="phone">
+    <img src="images/phone.png" />
+  </div>
+  <a class="finalButton" id="finalButton" href="#"><span>Активировать нейросеть</span></a>
+  <div id="webgl">
+    <div id="videoBlock">
+      <video id="video" width="80%" controls>
+        <source e="video/mp4" codecs="avc1.42E01E, mp4a.40.2" />
+      </video>
+    </div>
+  </div>
+
+  <script src="vendor/jquery.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/three.interaction.js"></script>
+  <script src="vendor/TrackballControls.js"></script>
+  <script src="vendor/OrbitControls.js"></script>
+  <script src="vendor/Tween.js"></script>
+</body>
+
 </html>

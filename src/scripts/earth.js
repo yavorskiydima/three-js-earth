@@ -4,7 +4,7 @@ export class Earth {
   isRender = true;
   showRussia = false;
   isPluseRotation = true;
-  colorCity = 0xd57a79;
+  colorCity = 0x963396;
   colorGraphLine1 = 0x0c69b5;
   colorGraphLine2 = 0x984183;
   colorGraphPoint = 0x2B63A8;
@@ -46,14 +46,14 @@ export class Earth {
     this.camera.position.y = 8.304313035745599;
     this.camera.position.z = -2.0294497591270346;
     this.enableControls(false);
-    this.scene.add(new THREE.AmbientLight(0xffffff, 1));
+    this.scene.add(new THREE.AmbientLight(0xffffff, 2));
     this.star = createStars(90, 64);
     this.scene.add(this.star);
     this.earth = new THREE.Group();
     this.sphere = createSphere(this.radius, this.segments);
     this.sphere.rotation.y = 1.57;
     this.earth.add(this.sphere);
-    this.earth.add(createClouds(this.radius, this.segments));
+    //this.earth.add(createClouds(this.radius, this.segments));
     this.scene.add(this.earth);
     this.graph = new THREE.Group();
     this.earth.add(this.graph);
@@ -67,13 +67,9 @@ export class Earth {
 
     function createSphere(radius, segments) {
       return new THREE.Mesh(
-        new THREE.SphereGeometry(radius, segments, segments),
+        new THREE.SphereBufferGeometry(radius, segments, segments),
         new THREE.MeshPhongMaterial({
-          map: new THREE.TextureLoader().load('images/2_no_clouds_8k.jpg'),
-          bumpMap: new THREE.TextureLoader().load('images/elev_bump_4k.jpg'),
-          bumpScale: 0.005,
-          specularMap: new THREE.TextureLoader().load('images/water_4k.png'),
-          specular: new THREE.Color('grey'),
+          map: new THREE.TextureLoader().load('images/country-outlines-4k.png'),
         }),
       );
     }
@@ -243,11 +239,16 @@ export class Earth {
         .easing(TWEEN.Easing.Cubic.InOut)
         .start();
     }
+
+    const XYZ1 = this.decodeCoord(city.lat, city.lon, this.radius + 0.035);
+    const light = new THREE.PointLight(0xFFFFFF, 1.5);
+    light.position.set(XYZ1.x, XYZ1.y, XYZ1.z);
+    this.earth.add(light)
   }
 
   newCity(name, coord, func) {
     let sphereGeometry = new THREE.SphereGeometry(0.03, 32, 32);;
-    let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorCity });
+    let sphereMaterial = new THREE.MeshPhongMaterial({ color: this.colorCity });
     let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = name;
     earthMesh.lat = coord.lat;
@@ -305,7 +306,9 @@ export class Earth {
   newNeuron(group) {
     let pos = group.curve.getPointAt(0);
     let sphereGeometry = new THREE.SphereGeometry(0.02, 8, 8);
-    let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
+    //let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
+    // с тенями на нейронах
+    let sphereMaterial = new THREE.MeshPhongMaterial({ color: this.colorGraphPoint });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;

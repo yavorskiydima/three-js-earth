@@ -3,6 +3,9 @@ import { Earth } from "./earth";
 import { showVideo, showFinalButton } from "./showVideoCallback";
 import { city } from "../city";
 
+const cityId = document.getElementById("city");
+const cityName = document.getElementById("cityName");
+
 const DELAY_START = 5000; // задержка в начале перед звонком
 const TIME_WAIT_PHONE = 5000; // задержка звонка
 const TIME_SHOW_CITY = 2000; // время за которое идет приближение к городу
@@ -19,6 +22,16 @@ const cityView = [
   "Союз «ТПП Саратовской области»",
   "Союз «Санкт-Петербургская ТПП»"
 ];
+const cityNameText = [
+  "Пермь",
+  "Челябинск",
+  "Хабаровск",
+  "Ставрополь",
+  "Краснодар",
+  "Воронеж",
+  "Саратов",
+  "Санкт-Петербург"
+];
 
 export const earth = new Earth("webgl");
 earth.stopRender();
@@ -32,6 +45,8 @@ function callbackFunc(name) {
 
 //callback окончания видео
 export function endVideo() {
+  cityId.style.display = "none";
+  cityId.style.opacity = "0";
   cityCount++;
   if (cityCount === 2) {
     //отображение кнопки запуска нейросети cityView.length
@@ -65,6 +80,11 @@ $(".logo").click(function() {
 $(".phone").click(function() {
   $(".phone").css("display", "none");
   earth.showCity(cityView[cityCount], TIME_SHOW_CITY);
+  setTimeout(() => {
+    cityName.innerHTML = cityNameText[cityCount];
+    cityId.style.display = "block";
+    cityId.style.opacity = "1";
+  }, TIME_SHOW_CITY);
   setTimeout(() => {
     showVideo("./images/videoplayback.mp4");
   }, TIME_SHOW_CITY + DELAY_SHOW_VIDEO);

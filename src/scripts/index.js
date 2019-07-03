@@ -1,7 +1,7 @@
-import '../styles/index.scss';
-import { Earth } from './earth';
-import { showVideo, showFinalButton } from './showVideoCallback';
-import { city } from '../city';
+import "../styles/index.scss";
+import { Earth } from "./earth";
+import { showVideo, showFinalButton } from "./showVideoCallback";
+import { city } from "../city";
 
 const DELAY_START = 5000; // задержка в начале перед звонком
 const TIME_WAIT_PHONE = 5000; // задержка звонка
@@ -10,22 +10,22 @@ const DELAY_SHOW_VIDEO = 2000; //время которое пульсирует 
 
 let cityCount = 0;
 const cityView = [
-  'Союз «Пермская ТПП»',
-  'Союз «Южно-Уральская ТПП»',
-  'Союз «Дальневосточная ТПП»',
-  'Союз «ТПП Ставропольского края»',
-  'Союз «ТПП Краснодарского края»',
-  'Союз «ТПП Воронежской области»',
-  'Союз «ТПП Саратовской области»',
-  'Союз «Санкт-Петербургская ТПП»',
+  "Союз «Пермская ТПП»",
+  "Союз «Южно-Уральская ТПП»",
+  "Союз «Дальневосточная ТПП»",
+  "Союз «ТПП Ставропольского края»",
+  "Союз «ТПП Краснодарского края»",
+  "Союз «ТПП Воронежской области»",
+  "Союз «ТПП Саратовской области»",
+  "Союз «Санкт-Петербургская ТПП»"
 ];
 
-const audio = new Audio('/images/phone1.mp3');
+const audio = new Audio("/images/phone1.mp3");
 audio.loop = true;
 
-export const earth = new Earth('webgl');
+export const earth = new Earth("webgl");
 
-$('.phone').css('display', 'none');
+$(".phone").css("display", "none");
 
 //callback нажатия на город
 function callbackFunc(name) {
@@ -35,14 +35,14 @@ function callbackFunc(name) {
 //callback окончания видео
 export function endVideo() {
   cityCount++;
-  if (cityCount === cityView.length) {
+  if (cityCount === 1) {
     //отображение кнопки запуска нейросети cityView.length
     earth.showRus();
     showFinalButton();
   } else {
     earth.defaultCamera();
     setTimeout(() => {
-      $('.phone').css('display', 'block');
+      $(".phone").css("display", "block");
       audio.play();
     }, TIME_WAIT_PHONE + DELAY_START);
   }
@@ -52,24 +52,24 @@ city.forEach(item => {
 });
 
 //обработка старта
-$('.logo').click(function () {
-  $('.logo').addClass('end');
+$(".logo").click(function() {
+  $(".logo").addClass("end");
   setTimeout(() => {
-    $('.logo').css('display', 'none');
+    $(".logo").css("display", "none");
     earth.enableControls(true);
     setTimeout(() => {
-      $('.phone').css('display', 'block');
+      $(".phone").css("display", "block");
       audio.play();
     }, TIME_WAIT_PHONE);
   }, 2100);
 });
 
 //обработка нажатия на телефон
-$('.phone').click(function () {
-  $('.phone').css('display', 'none');
+$(".phone").click(function() {
+  $(".phone").css("display", "none");
   audio.pause();
   earth.showCity(cityView[cityCount], TIME_SHOW_CITY);
   setTimeout(() => {
-    showVideo('./images/videoplayback.mp4');
+    showVideo("./images/videoplayback.mp4");
   }, TIME_SHOW_CITY + DELAY_SHOW_VIDEO);
 });

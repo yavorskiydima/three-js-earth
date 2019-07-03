@@ -44,6 +44,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
+    "@webassemblyjs/wasm-opt": "^1.8.5",
+    "@webassemblyjs/wasm-parser": "^1.8.5",
     "core-js": "^3.0.1"
   }
 }

@@ -1,4 +1,4 @@
-$base-color: #771A6B;
+$base-color: #771a6b;
 
 .logo {
   width: 100%;
@@ -35,7 +35,7 @@ $base-color: #771A6B;
   background-color: rgba($base-color, 0.8);
   border: 10px solid white;
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     height: 110%;
     width: 110%;
@@ -122,38 +122,56 @@ $base-color: #771A6B;
   align-items: center;
   transform: scale(0.1);
 }
-a.finalButton {
-  z-index: 999999;
+.start {
+  opacity: 0;
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -45px;
-  margin-left: -225px;
-  width: 450px;
-  overflow: hidden;
-  height: 90px;
-  text-decoration: none;
-  border-radius: 7px;
-  color: #a675b3;
-  text-align: center;
-  opacity: 0;
-  line-height: 60px;
-  display: none;
-  font: normal 22px arial;
-  box-shadow: inset 0 1px 1px rgba(111, 55, 125, 0.8),
-    inset 0 -1px 0px rgba(63, 59, 113, 0.2), 0 9px 16px 0 rgba(0, 0, 0, 0.3),
-    0 4px 3px 0 rgba(0, 0, 0, 0.3), 0 0 0 1px #150a1e;
-  background-image: linear-gradient(#3b2751, #271739);
-  text-shadow: 0 0 21px rgba(223, 206, 228, 0.5), 0 -1px 0 #311d47;
+  width: 400px;
+  height: 300px;
+  margin-left: -200px;
+  margin-top: -150px;
   transition: all 1.3s ease-out;
+  span {
+    width: 100%;
+    display: block;
+    font-size: 26px;
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+  }
+  img {
+    height: 90%;
+    margin-left: 65px;
+  }
 }
-a.finalButton span {
-  height: 90px;
-  line-height: 90px;
-}
-a.finalButton:hover,
-a.finalButton:focus {
-  color: #fff;
-  text-shadow: 0 0 21px rgba(223, 206, 228, 0.5),
-    0 0 10px rgba(223, 206, 228, 0.4), 0 0 2px #2a153c;
+
+#active {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: none;
+  span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    top: 10%;
+    position: absolute;
+    font-size: 48px;
+    color: white;
+    text-transform: uppercase;
+    animation: blink 2s linear infinite;
+    @keyframes blink {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
 }

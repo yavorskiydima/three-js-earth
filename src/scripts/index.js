@@ -20,9 +20,6 @@ const cityView = [
   "Союз «Санкт-Петербургская ТПП»"
 ];
 
-const audio = new Audio("/images/phone1.mp3");
-audio.loop = true;
-
 export const earth = new Earth("webgl");
 
 $(".phone").css("display", "none");
@@ -43,7 +40,6 @@ export function endVideo() {
     earth.defaultCamera();
     setTimeout(() => {
       $(".phone").css("display", "block");
-      audio.play();
     }, TIME_WAIT_PHONE + DELAY_START);
   }
 }
@@ -59,7 +55,6 @@ $(".logo").click(function() {
     earth.enableControls(true);
     setTimeout(() => {
       $(".phone").css("display", "block");
-      audio.play();
     }, TIME_WAIT_PHONE);
   }, 2100);
 });
@@ -67,7 +62,6 @@ $(".logo").click(function() {
 //обработка нажатия на телефон
 $(".phone").click(function() {
   $(".phone").css("display", "none");
-  audio.pause();
   earth.showCity(cityView[cityCount], TIME_SHOW_CITY);
   setTimeout(() => {
     showVideo("./images/videoplayback.mp4");

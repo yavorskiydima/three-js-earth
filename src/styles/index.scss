@@ -59,42 +59,9 @@ $base-color: #771a6b;
   }
 
   img {
-    width: 60%;
-    margin-left: 40px;
-    margin-top: 40px;
-    animation: 0.5s tremor ease-out infinite;
-    @keyframes tremor {
-      0% {
-        transform: translateX(0);
-      }
-      11% {
-        transform: translateX(0);
-      }
-      22% {
-        transform: translateX(2%);
-      }
-      33% {
-        transform: translateX(-2%);
-      }
-      44% {
-        transform: translateX(2%);
-      }
-      55% {
-        transform: translateX(-2%);
-      }
-      66% {
-        transform: translateX(2%);
-      }
-      77% {
-        transform: translateX(0);
-      }
-      88% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
+    width: 50%;
+    margin-left: 44px;
+    margin-top: 27px;
   }
 }
 

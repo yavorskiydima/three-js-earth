@@ -13,7 +13,7 @@ export const showVideo = (videoUrl, end = false) => {
   earth.stopRender();
   setTimeout(() => {
     video.addEventListener("ended", end ? hideVideoLast : hideVideo);
-    document.addEventListener("keyup", stopOnEsc);
+    document.addEventListener("keyup", end ? stopOnEscLast : stopOnEsc);
     videoBlock.style.transitionDuration = "0.8s";
     videoBlock.style.transform = "scale(1)";
     videoBlock.style.opacity = "1";
@@ -45,7 +45,6 @@ export const hideVideoLast = () => {
   setTimeout(() => {
     endPic.style.display = "block";
     endPic.style.opacity = "1";
-    videoBlock.style.transform = "scale(0.1)";
     videoBlock.style.opacity = "0";
   }, 800);
 
@@ -68,6 +67,11 @@ function stopVideo() {
 function stopOnEsc(e) {
   if (e.keyCode === 27) {
     hideVideo(endVideo);
+  }
+}
+function stopOnEscLast(e) {
+  if (e.keyCode === 27) {
+    hideVideoLast(endVideo);
   }
 }
 function activateNet() {

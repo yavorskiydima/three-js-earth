@@ -5,13 +5,14 @@ const videoBlock = document.getElementById("videoBlock");
 const video = document.getElementById("video");
 const finalButton = document.getElementById("start");
 const startEndVideo = document.getElementById("active");
+const endPic = document.getElementById("end");
 
-export const showVideo = videoUrl => {
+export const showVideo = (videoUrl, end = false) => {
   video.setAttribute("src", videoUrl);
   videoBlock.style.display = "flex";
   earth.stopRender();
   setTimeout(() => {
-    video.addEventListener("ended", hideVideo);
+    video.addEventListener("ended", end ? hideVideoLast : hideVideo);
     document.addEventListener("keyup", stopOnEsc);
     videoBlock.style.transitionDuration = "0.8s";
     videoBlock.style.transform = "scale(1)";
@@ -38,6 +39,21 @@ export const hideVideo = () => {
     videoBlock.style.transitionDuration = "0";
   }, 1600);
 };
+export const hideVideoLast = () => {
+  video.removeEventListener("ended", hideVideo);
+  document.removeEventListener("keyup", stopOnEsc);
+  setTimeout(() => {
+    endPic.style.display = "block";
+    endPic.style.opacity = "1";
+    videoBlock.style.transform = "scale(0.1)";
+    videoBlock.style.opacity = "0";
+  }, 800);
+
+  setTimeout(() => {
+    videoBlock.style.display = "none";
+    videoBlock.style.transitionDuration = "0";
+  }, 3000);
+};
 export function showFinalButton() {
   finalButton.style.display = "block";
   setTimeout(() => {
@@ -62,6 +78,9 @@ function activateNet() {
 
     setTimeout(() => {
       startEndVideo.style.display = "block";
+      startEndVideo.addEventListener("click", () =>
+        showVideo("./images/videoplayback.mp4", true)
+      );
     }, 2000);
     earth.line("Союз «Приморская ТПП»", "Союз «Дальневосточная ТПП»");
     earth.line("Союз «Дальневосточная ТПП»", "Союз «Сахалинская ТПП»");

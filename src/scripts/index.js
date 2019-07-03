@@ -35,7 +35,7 @@ function callbackFunc(name) {
 //callback окончания видео
 export function endVideo() {
   cityCount++;
-  if (cityCount === 1) {
+  if (cityCount === 2) {
     //отображение кнопки запуска нейросети cityView.length
     earth.showRus();
     showFinalButton();

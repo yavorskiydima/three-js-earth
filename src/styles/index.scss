@@ -34,6 +34,14 @@ $base-color: #771a6b;
   border-radius: 50%;
   background-color: rgba($base-color, 0.8);
   border: 10px solid white;
+  span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    text-transform: uppercase;
+  }
   &:before {
     content: "";
     position: absolute;

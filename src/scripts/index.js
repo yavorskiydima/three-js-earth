@@ -21,6 +21,7 @@ const cityView = [
 ];
 
 export const earth = new Earth("webgl");
+earth.stopRender();
 
 $(".phone").css("display", "none");
 
@@ -49,6 +50,7 @@ city.forEach(item => {
 
 //обработка старта
 $(".logo").click(function() {
+  earth.startRender();
   $(".logo").addClass("end");
   setTimeout(() => {
     $(".logo").css("display", "none");

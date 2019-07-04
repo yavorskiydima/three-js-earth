@@ -5,7 +5,7 @@ export class Earth {
   showRussia = false;
   isPluseRotation = true;
   colorCity = 0xffef61;
-  colorGraphLine = 0x0c69b5;
+  colorGraphLine = 0x00c4f0;
   colorGraphPoint = 0x00d2ff;
   //colorGraphPoint = 0xFFFFFF;
   startNet = false;
@@ -97,6 +97,8 @@ export class Earth {
         new THREE.SphereBufferGeometry(radius, segments, segments),
         new THREE.MeshPhongMaterial({
           map: new THREE.TextureLoader().load('images/map2.png'),
+          opacity: 0.9,
+          transparent: true,
         }),
       );
       sphere.receiveShadow = true;
@@ -330,8 +332,8 @@ export class Earth {
     const city2 = this.scene.getObjectByName(nameCity2);
     const dist = Math.sqrt(
       (city1.position.x - city2.position.x) ** 2 +
-        (city1.position.y - city2.position.y) ** 2 +
-        (city1.position.z - city2.position.z) ** 2,
+      (city1.position.y - city2.position.y) ** 2 +
+      (city1.position.z - city2.position.z) ** 2,
     );
     const p0 = city1.position;
     const p1 = this.decodeCoord(
@@ -363,6 +365,8 @@ export class Earth {
     //MeshLambertMaterial
     let sphereMaterial = new THREE.MeshPhongMaterial({
       color: this.colorGraphPoint,
+      opacity: 0.8,
+      transparent: true,
     });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
@@ -375,7 +379,11 @@ export class Earth {
   newLine(group) {
     let points = group.curve.getPoints(102);
     var geometry = new THREE.BufferGeometry().setFromPoints(points.slice(0, 1));
-    var material = new THREE.LineBasicMaterial({ color: this.colorGraphLine });
+    var material = new THREE.LineBasicMaterial({
+      color: this.colorGraphLine,
+      opacity: 0.5,
+      transparent: true,
+    });
     var curveObject = new THREE.Line(geometry, material);
     curveObject.points = points;
     curveObject.count = 0;

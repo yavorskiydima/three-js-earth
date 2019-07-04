@@ -8,6 +8,7 @@ export class Earth {
   colorGraphLine = 0x0c69b5;
   colorGraphPoint = 0x00d2ff;
   //colorGraphPoint = 0xFFFFFF;
+  startNet = false;
 
   linkShowCity = null;
 
@@ -62,7 +63,10 @@ export class Earth {
     this.earth.add(this.graph);
     this.city = new THREE.Group();
     this.earth.add(this.city);
+    this.lines = new THREE.Group();
+    this.earth.add(this.lines);
     this.render();
+
 
     //СОЛНЦЕ!!!!
     const light = new THREE.PointLight(0xffffff, 1.2);
@@ -126,6 +130,16 @@ export class Earth {
     requestAnimationFrame(this.render);
   };
   render = () => {
+    if (this.lines.children.length) {
+      this.lines.children.forEach(line => {
+        line.geometry.setFromPoints(line.points.slice(0, line.count));
+        line.count = line.count + 3;
+        if (line.count > 99) {
+          this.earth.add(line);
+          this.lines.remove(line);
+        }
+      })
+    }
     if (this.showRussia) {
       this.isPluseRotation
         ? (this.earth.rotation.y += 0.001)
@@ -151,7 +165,7 @@ export class Earth {
     this.controls.update();
     TWEEN.update();
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-    this.graph.children.forEach(element => {
+    this.startNet && this.graph.children.forEach(element => {
       element.children.forEach(item => {
         let point = element.curve.getPointAt(item.pos);
         const len = element.curve.getLength() * item.pos;
@@ -194,6 +208,10 @@ export class Earth {
     this.linkShowCity.scale.y = 1;
     this.linkShowCity.scale.z = 1;
     this.linkShowCity = null;
+  }
+
+  startNeuron() {
+    this.startNet = true;
   }
 
   defaultCamera() {
@@ -347,18 +365,19 @@ export class Earth {
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
-    sphere.speed = Math.random() * (0.02 - 0.008) + 0.008;
-    sphere.new = Math.random() * (0.2 - 0.05) + 0.05;
+    group.curve.getLength()
+    sphere.speed = Math.random() * (0.03 - 0.01) + 0.01;
+    sphere.new = group.curve.getLength() * (Math.random() * (0.9 - 0.7) + 0.7);
     group.add(sphere);
   }
   newLine(group) {
-    let points = group.curve.getPoints(50);
-    var geometry = new THREE.BufferGeometry().setFromPoints(points);
-    var material = new THREE.LineBasicMaterial({
-      color: this.colorGraphLine,
-    });
+    let points = group.curve.getPoints(102);
+    var geometry = new THREE.BufferGeometry().setFromPoints(points.slice(0, 1));
+    var material = new THREE.LineBasicMaterial({ color: this.colorGraphLine });
     var curveObject = new THREE.Line(geometry, material);
-    this.earth.add(curveObject);
+    curveObject.points = points;
+    curveObject.count = 0;
+    this.lines.add(curveObject);
   }
   showRus() {
     this.defaultCity();

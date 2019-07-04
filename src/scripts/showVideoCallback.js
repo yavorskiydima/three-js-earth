@@ -86,6 +86,7 @@ function activateNet() {
         showVideo("./images/videoplayback.mp4", true)
       );
     }, 2000);
+    setTimeout(() => earth.startNeuron(), 1000);
     earth.line("Союз «Приморская ТПП»", "Союз «Дальневосточная ТПП»");
     earth.line("Союз «Дальневосточная ТПП»", "Союз «Сахалинская ТПП»");
     earth.line("Союз «Сахалинская ТПП»", "Союз «Приморская ТПП»");

@@ -45,7 +45,7 @@ export class Earth {
     this.camera.position.y = 8.304313035745599;
     this.camera.position.z = -2.0294497591270346;
     this.enableControls(false);
-    this.scene.add(new THREE.AmbientLight(0xffffff, 2));
+    this.scene.add(new THREE.AmbientLight(0xffffff, 1));
     this.star = createStars(90, 64);
     this.scene.add(this.star);
     this.earth = new THREE.Group();
@@ -67,8 +67,8 @@ export class Earth {
     function createSphere(radius, segments) {
       return new THREE.Mesh(
         new THREE.SphereBufferGeometry(radius, segments, segments),
-        new THREE.MeshPhongMaterial({
-          map: new THREE.TextureLoader().load('images/country-outlines-4k.png'),
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load('images/map2.png'),
         }),
       );
     }

@@ -49,7 +49,7 @@ export function endVideo() {
   cityName.style.display = "none";
   cityName.style.opacity = "0";
   cityCount++;
-  if (cityCount === 2) {
+  if (cityCount === 1) {
     //отображение кнопки запуска нейросети cityView.length
     earth.showRus();
     showFinalButton();

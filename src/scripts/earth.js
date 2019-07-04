@@ -60,6 +60,11 @@ export class Earth {
     this.earth.add(this.city);
     this.render();
 
+    //СОЛНЦЕ!!!!
+    const light = new THREE.PointLight(0xFFFFFF, 1.5);
+    light.position.set(-5.6520229649249005, 11.755435572219891, -8.12980202666365);
+    this.earth.add(light)
+
     const startRGB = { r: 179, g: 116, b: 148 };
     const endRGB = { r: 234, g: 194, b: 204 };
     this.palitre = Array(100).fill(null).map((item, i) => ({ r: startRGB.r + (endRGB.r - startRGB.r) / 100 * i, g: startRGB.g + (endRGB.g - startRGB.g) / 100 * i, b: startRGB.b + (endRGB.b - startRGB.b) / 100 * i }))
@@ -239,16 +244,11 @@ export class Earth {
         .easing(TWEEN.Easing.Cubic.InOut)
         .start();
     }
-
-    const XYZ1 = this.decodeCoord(city.lat, city.lon, this.radius + 0.035);
-    const light = new THREE.PointLight(0xFFFFFF, 1.5);
-    light.position.set(XYZ1.x, XYZ1.y, XYZ1.z);
-    this.earth.add(light)
   }
 
   newCity(name, coord, func) {
-    let sphereGeometry = new THREE.SphereGeometry(0.03, 32, 32);;
-    let sphereMaterial = new THREE.MeshPhongMaterial({ color: this.colorCity });
+    let sphereGeometry = new THREE.SphereGeometry(0.03, 32, 32);
+    let sphereMaterial = new THREE.MeshLambertMaterial({ color: this.colorCity });
     let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = name;
     earthMesh.lat = coord.lat;
@@ -308,6 +308,7 @@ export class Earth {
     let sphereGeometry = new THREE.SphereGeometry(0.02, 8, 8);
     //let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
     // с тенями на нейронах
+    //MeshLambertMaterial
     let sphereMaterial = new THREE.MeshPhongMaterial({ color: this.colorGraphPoint });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);

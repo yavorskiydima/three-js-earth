@@ -6,7 +6,7 @@ export class Earth {
   isPluseRotation = true;
   colorCity = 0xffef61;
   colorGraphLine = 0x0c69b5;
-  colorGraphPoint = 0x2B63A8;
+  colorGraphPoint = 0x00d2ff;
   //colorGraphPoint = 0xFFFFFF;
   startNet = false;
 
@@ -25,6 +25,10 @@ export class Earth {
       1000,
     );
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    // Enabled shadow support
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.BasicShadowMap;
+
     this.controls = new THREE.OrbitControls(
       this.camera,
       this.renderer.domElement,
@@ -46,7 +50,7 @@ export class Earth {
     this.camera.position.y = 8.304313035745599;
     this.camera.position.z = -2.0294497591270346;
     this.enableControls(false);
-    this.scene.add(new THREE.AmbientLight(0xffffff, 1));
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.4));
     this.star = createStars(90, 64);
     this.scene.add(this.star);
     this.earth = new THREE.Group();
@@ -65,21 +69,37 @@ export class Earth {
 
 
     //СОЛНЦЕ!!!!
-    const light = new THREE.PointLight(0xFFFFFF, 1.5);
-    light.position.set(-5.6520229649249005, 11.755435572219891, -8.12980202666365);
-    this.earth.add(light)
+    const light = new THREE.PointLight(0xffffff, 1.2);
+    light.position.set(
+      -5.6520229649249005,
+      11.755435572219891,
+      -8.12980202666365,
+    );
+    // add light create shadow
+    light.shadow.camera.near = 0.1;
+    light.shadow.camera.far = 25;
+    this.earth.add(light);
 
     const startRGB = { r: 179, g: 116, b: 148 };
     const endRGB = { r: 234, g: 194, b: 204 };
-    this.palitre = Array(100).fill(null).map((item, i) => ({ r: startRGB.r + (endRGB.r - startRGB.r) / 100 * i, g: startRGB.g + (endRGB.g - startRGB.g) / 100 * i, b: startRGB.b + (endRGB.b - startRGB.b) / 100 * i }))
+    this.palitre = Array(100)
+      .fill(null)
+      .map((item, i) => ({
+        r: startRGB.r + ((endRGB.r - startRGB.r) / 100) * i,
+        g: startRGB.g + ((endRGB.g - startRGB.g) / 100) * i,
+        b: startRGB.b + ((endRGB.b - startRGB.b) / 100) * i,
+      }));
 
     function createSphere(radius, segments) {
-      return new THREE.Mesh(
+      const sphere = new THREE.Mesh(
         new THREE.SphereBufferGeometry(radius, segments, segments),
-        new THREE.MeshBasicMaterial({
+        new THREE.MeshPhongMaterial({
           map: new THREE.TextureLoader().load('images/map2.png'),
         }),
       );
+      sphere.receiveShadow = true;
+      sphere.castShadow = true;
+      return sphere;
     }
 
     function createClouds(radius, segments) {
@@ -121,9 +141,14 @@ export class Earth {
       })
     }
     if (this.showRussia) {
-      this.isPluseRotation ? this.earth.rotation.y += 0.001 : this.earth.rotation.y -= 0.001;
-      if (this.earth.rotation.y > 0.3) { this.isPluseRotation = false }
-      else if (this.earth.rotation.y < -0.5) { this.isPluseRotation = true }
+      this.isPluseRotation
+        ? (this.earth.rotation.y += 0.001)
+        : (this.earth.rotation.y -= 0.001);
+      if (this.earth.rotation.y > 0.3) {
+        this.isPluseRotation = false;
+      } else if (this.earth.rotation.y < -0.5) {
+        this.isPluseRotation = true;
+      }
     }
     if (this.linkShowCity) {
       if (this.linkShowCity.scale.x < 1) {
@@ -131,11 +156,11 @@ export class Earth {
       } else if (this.linkShowCity.scale.x > 2) {
         this.linkShowCity.scale.scaleUp = false;
       }
-      const speed = this.linkShowCity.scale.scaleUp ? 0.05 : -0.03
-      this.linkShowCity.scale.x += speed
+      const speed = this.linkShowCity.scale.scaleUp ? 0.05 : -0.03;
+      this.linkShowCity.scale.x += speed;
       this.linkShowCity.scale.y += speed;
       this.linkShowCity.scale.z += speed;
-      this.newColor(this.linkShowCity, this.palitre)
+      this.newColor(this.linkShowCity, this.palitre);
     }
     this.controls.update();
     TWEEN.update();
@@ -150,12 +175,12 @@ export class Earth {
 
         if (!item.checked && len > item.new) {
           this.newNeuron(element);
-          item.checked = true
+          item.checked = true;
         } else if (item.pos > 1.1) {
           element.remove(item);
         }
         //item.pos += 1 / element.curve.getLength() * 0.008;
-        item.pos += 1 / element.curve.getLength() * item.speed;
+        item.pos += (1 / element.curve.getLength()) * item.speed;
       });
     });
     this.star.rotation.x += 0.0005;
@@ -170,8 +195,11 @@ export class Earth {
     city.material.color.b = palitre[city.material.color.count].b / 255;
 
     city.material.color.count += city.material.color.up ? 1 : -1;
-    if (city.material.color.count === 99) { city.material.color.up = false }
-    else if (city.material.color.count === 0) { city.material.color.up = true };
+    if (city.material.color.count === 99) {
+      city.material.color.up = false;
+    } else if (city.material.color.count === 0) {
+      city.material.color.up = true;
+    }
   }
 
   defaultCity() {
@@ -266,18 +294,22 @@ export class Earth {
 
   newCity(name, coord, func) {
     let sphereGeometry = new THREE.SphereGeometry(0.03, 32, 32);
-    let sphereMaterial = new THREE.MeshLambertMaterial({ color: this.colorCity });
+    let sphereMaterial = new THREE.MeshPhongMaterial({
+      color: this.colorCity,
+    });
     let earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = name;
     earthMesh.lat = coord.lat;
     earthMesh.lon = coord.lon;
-    const XYZ = this.decodeCoord(coord.lat, coord.lon, this.radius);
+    const XYZ = this.decodeCoord(coord.lat, coord.lon, this.radius - 0.01);
     earthMesh.position.z = XYZ.z;
     earthMesh.position.x = XYZ.x;
     earthMesh.position.y = XYZ.y;
     earthMesh.on('click', ev => {
       return func(ev.data.target.name);
     });
+    // earthMesh.receiveShadow = true;
+    earthMesh.castShadow = true;
     this.city.add(earthMesh);
   }
 
@@ -296,8 +328,8 @@ export class Earth {
     const city2 = this.scene.getObjectByName(nameCity2);
     const dist = Math.sqrt(
       (city1.position.x - city2.position.x) ** 2 +
-      (city1.position.y - city2.position.y) ** 2 +
-      (city1.position.z - city2.position.z) ** 2,
+        (city1.position.y - city2.position.y) ** 2 +
+        (city1.position.z - city2.position.z) ** 2,
     );
     const p0 = city1.position;
     const p1 = this.decodeCoord(
@@ -327,7 +359,9 @@ export class Earth {
     //let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
     // с тенями на нейронах
     //MeshLambertMaterial
-    let sphereMaterial = new THREE.MeshPhongMaterial({ color: this.colorGraphPoint });
+    let sphereMaterial = new THREE.MeshPhongMaterial({
+      color: this.colorGraphPoint,
+    });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
@@ -359,7 +393,7 @@ export class Earth {
       )
       .easing(TWEEN.Easing.Cubic.In)
       .onComplete(() => {
-        this.showRussia = true
+        this.showRussia = true;
       })
       .start();
   }

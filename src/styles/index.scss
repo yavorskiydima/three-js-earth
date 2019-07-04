@@ -1,7 +1,7 @@
 @font-face {
   font-family: UTTP; /* Имя шрифта */
   src: url(/images/GOTHICB.TTF); /* Путь к файлу со шрифтом */
- }
+}
 
 $base-color: #771a6b;
 * {
@@ -47,11 +47,12 @@ $base-color: #771a6b;
     width: 100%;
     text-align: center;
     color: white;
-    font-size: 24px;
+    font-size: 33px;
     text-transform: uppercase;
+    text-shadow: 0 0 16px rgba(225, 255, 255, 0.8);
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     height: 110%;
     width: 110%;
@@ -75,8 +76,8 @@ $base-color: #771a6b;
   }
 
   img {
-    width: 50%;
-    margin-left: 44px;
+    width: 30%;
+    margin-left: 66px;
     margin-top: 27px;
   }
 }
@@ -180,9 +181,10 @@ $base-color: #771a6b;
   width: 100%;
   height: 100%;
   position: absolute;
-  display: none;
+  transform: scale(0);
   top: 0;
   left: 0;
+  transition: all 1.5s ease-out;
   .block {
     width: 700px;
     height: 30px;
@@ -193,14 +195,13 @@ $base-color: #771a6b;
     left: 0;
     margin: auto;
     text-align: center;
-    margin-top: 31%; 
+    margin-top: 31%;
     span {
-      transition: all 2s ease-out;
-      display: none;
-      opacity: 0;
+      box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.6);
       border: 4px solid white;
       border-radius: 10px;
-      background-color: rgb(129, 0, 155);
+      background-color: rgba(94, 36, 105, 1);
+      // text-shadow: 0 0 16px rgba(225, 255, 255, 0.8);
       font-size: 50px;
       padding: 5px 30px;
       color: white;

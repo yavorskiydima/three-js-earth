@@ -80,8 +80,10 @@ export class Earth {
     light.shadow.camera.far = 25;
     this.earth.add(light);
 
-    const startRGB = { r: 179, g: 116, b: 148 };
-    const endRGB = { r: 234, g: 194, b: 204 };
+    const startRGB = { r: 250, g: 193, b: 5 };
+    // { r: 179, g: 116, b: 148 };
+    const endRGB = startRGB;
+    // { r: 234, g: 194, b: 204 };
     this.palitre = Array(100)
       .fill(null)
       .map((item, i) => ({

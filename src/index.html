@@ -1,58 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
-    />
-    <title>webpack starterkit</title>
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        background-color: #000;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div class="city" id="city">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+  <title>webpack starterkit</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="city" id="city">
+    <div class="block">
       <span id="cityName">город</span>
-      <img src="images/12.png" />
-    </div>
-    <div class="endPic" id="end">
-      <img src="images/start.jpg" />
-    </div>
-    <div class="logo">
-      <video src="./images/start.mp4" autoplay loop></video>
-    </div>
-    <div class="phone">
-      <img src="images/12.png" />
-      <span>выбрать</span>
-    </div>
-    <div class="start" id="start">
-      <span>Активировать нейросеть</span>
-      <img src="images/test.png" />
-    </div>
-    <div id="active">
-      <span>сеть активирована</span>
     </div>
 
-    <div id="webgl">
-      <div id="videoBlock">
-        <video id="video" width="80%" controls>
-          <source e="video/mp4" codecs="avc1.42E01E, mp4a.40.2" />
-        </video>
-      </div>
-    </div>
+  </div>
+  <div class="endPic" id="end">
+    <img src="images/start.jpg" />
+  </div>
+  <div class="logo">
+    <video src="./images/start.mp4" autoplay loop></video>
+  </div>
+  <div class="phone">
+    <img src="images/12.png" />
+    <span>выбрать</span>
+  </div>
+  <div class="start" id="start">
+    <span>Активировать нейросеть</span>
+    <img src="images/test.png" />
+  </div>
+  <div id="active">
+    <span>сеть активирована</span>
+  </div>
 
-    <script src="vendor/jquery.js"></script>
-    <script src="vendor/three.min.js"></script>
-    <script src="vendor/three.interaction.js"></script>
-    <script src="vendor/TrackballControls.js"></script>
-    <script src="vendor/OrbitControls.js"></script>
-    <script src="vendor/Tween.js"></script>
-  </body>
+  <div id="webgl">
+    <div id="videoBlock">
+      <video id="video" width="80%" controls>
+        <source e="video/mp4" codecs="avc1.42E01E, mp4a.40.2" />
+      </video>
+    </div>
+  </div>
+
+  <script src="vendor/jquery.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/three.interaction.js"></script>
+  <script src="vendor/TrackballControls.js"></script>
+  <script src="vendor/OrbitControls.js"></script>
+  <script src="vendor/Tween.js"></script>
+</body>
+
 </html>

@@ -9,7 +9,7 @@ const cityName = document.getElementById("cityName");
 const DELAY_START = 5000; // задержка в начале перед звонком
 const TIME_WAIT_PHONE = 5000; // задержка звонка
 const TIME_SHOW_CITY = 2000; // время за которое идет приближение к городу
-const DELAY_SHOW_VIDEO = 2000; //время которое пульсирует точка
+const DELAY_SHOW_VIDEO = 6000; //время которое пульсирует точка
 
 let cityCount = 0;
 const cityView = [
@@ -46,7 +46,8 @@ function callbackFunc(name) {
 //callback окончания видео
 export function endVideo() {
   cityId.style.display = "none";
-  cityId.style.opacity = "0";
+  cityName.style.display = "none";
+  cityName.style.opacity = "0";
   cityCount++;
   if (cityCount === 2) {
     //отображение кнопки запуска нейросети cityView.length
@@ -64,7 +65,7 @@ city.forEach(item => {
 });
 
 //обработка старта
-$(".logo").click(function() {
+$(".logo").click(function () {
   earth.startRender();
   $(".logo").addClass("end");
   setTimeout(() => {
@@ -77,13 +78,14 @@ $(".logo").click(function() {
 });
 
 //обработка нажатия на телефон
-$(".phone").click(function() {
+$(".phone").click(function () {
   $(".phone").css("display", "none");
   earth.showCity(cityView[cityCount], TIME_SHOW_CITY);
   setTimeout(() => {
     cityName.innerHTML = cityNameText[cityCount];
     cityId.style.display = "block";
-    cityId.style.opacity = "1";
+    cityName.style.display = "inline";
+    cityName.style.opacity = "1";
   }, TIME_SHOW_CITY);
   setTimeout(() => {
     showVideo("./images/videoplayback.mp4");

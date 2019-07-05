@@ -360,13 +360,14 @@ export class Earth {
   }
   newNeuron(group) {
     let pos = group.curve.getPointAt(0);
-    let sphereGeometry = new THREE.SphereGeometry(0.02, 8, 8);
+    let sphereGeometry = new THREE.SphereGeometry((Math.random() < 0.5 ? 0.02 : 0.0001), 8, 8);
     //let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
     // с тенями на нейронах
     //MeshLambertMaterial
     let sphereMaterial = new THREE.MeshPhongMaterial({
       color: this.colorGraphPoint,
       opacity: 0.8,
+      //opacity: Math.random() < 0.5 ? 0.8 : 0,
       transparent: true,
     });
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);

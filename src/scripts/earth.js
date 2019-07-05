@@ -328,8 +328,8 @@ export class Earth {
     const city2 = this.scene.getObjectByName(nameCity2);
     const dist = Math.sqrt(
       (city1.position.x - city2.position.x) ** 2 +
-        (city1.position.y - city2.position.y) ** 2 +
-        (city1.position.z - city2.position.z) ** 2,
+      (city1.position.y - city2.position.y) ** 2 +
+      (city1.position.z - city2.position.z) ** 2,
     );
     const p0 = city1.position;
     const p1 = this.decodeCoord(
@@ -369,7 +369,7 @@ export class Earth {
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
     group.curve.getLength();
-    sphere.speed = Math.random() * (0.03 - 0.01) + 0.01;
+    sphere.speed = Math.random() * (0.06 - 0.02) + 0.02;
     sphere.new = group.curve.getLength() * (Math.random() * (0.9 - 0.7) + 0.7);
     group.add(sphere);
   }

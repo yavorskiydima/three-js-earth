@@ -42,8 +42,8 @@ export class Earth {
     document.getElementById(el).appendChild(this.renderer.domElement);
     this.controls.maxDistance = 40;
     this.controls.minDistance = 10;
-    this.controls.maxPolarAngle = 0.7;
-    this.controls.minPolarAngle = 0.7;
+    this.controls.maxPolarAngle = 0.5;
+    this.controls.minPolarAngle = 0.5;
     this.controls.autoRotate = true;
     this.controls.autoRotateSpeed = 2;
     this.camera.position.x = -12.772980418090368;
@@ -71,9 +71,9 @@ export class Earth {
     //СОЛНЦЕ!!!!
     const light = new THREE.PointLight(0xffffff, 1.2);
     light.position.set(
-      -5.6520229649249005,
-      11.755435572219891,
-      -8.12980202666365,
+      -6.976531536867979,
+      13.4882272933105,
+      2.371717158616364,
     );
     // add light create shadow
     light.shadow.camera.near = 0.1;
@@ -134,6 +134,7 @@ export class Earth {
     requestAnimationFrame(this.render);
   };
   render = () => {
+    console.log(this.camera.position)
     if (this.lines.children.length) {
       this.lines.children.forEach(line => {
         line.geometry.setFromPoints(line.points.slice(0, line.count));
@@ -232,8 +233,8 @@ export class Earth {
       .easing(TWEEN.Easing.Cubic.In)
       .onComplete(() => {
         this.controls.minDistance = 10;
-        this.controls.maxPolarAngle = 0.7;
-        this.controls.minPolarAngle = 0.7;
+        this.controls.maxPolarAngle = 0.5;
+        this.controls.minPolarAngle = 0.5;
         this.controls.autoRotate = true;
         this.enableControls(true);
       })

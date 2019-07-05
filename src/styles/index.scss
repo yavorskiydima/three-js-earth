@@ -121,10 +121,12 @@ $base-color: #771a6b;
   span {
     width: 100%;
     display: block;
-    font-size: 26px;
+    font-size: 44px;
     text-align: center;
     color: white;
     text-transform: uppercase;
+    text-shadow: 0 11px 8px rgba(0,0,0,.3);
+    letter-spacing: 2px;
   }
   img {
     height: 90%;

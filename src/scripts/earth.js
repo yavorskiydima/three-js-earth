@@ -68,7 +68,7 @@ export class Earth {
     this.render();
 
     //СОЛНЦЕ!!!!
-    const light = new THREE.PointLight(0xffffff, 1.2);
+    const light = new THREE.PointLight(0xffffff, 0.8);
     light.position.set(-6.976531536867979, 13.4882272933105, 2.371717158616364);
     // add light create shadow
     light.shadow.camera.near = 0.1;

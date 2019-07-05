@@ -150,16 +150,17 @@ export class Earth {
       }
     }
     if (this.linkShowCity) {
-      if (this.linkShowCity.scale.x < 1) {
-        this.linkShowCity.scale.scaleUp = true;
-      } else if (this.linkShowCity.scale.x > 2) {
-        this.linkShowCity.scale.scaleUp = false;
+      const speedScale = 0.05
+      this.linkShowCity.material.opacity = this.linkShowCity.material.opacity - 0.01;
+      this.linkShowCity.scale.x = this.linkShowCity.scale.x + speedScale;
+      this.linkShowCity.scale.y = this.linkShowCity.scale.y + speedScale;
+      this.linkShowCity.scale.z = this.linkShowCity.scale.z + speedScale;
+      if (this.linkShowCity.material.opacity <= 0) {
+        this.linkShowCity.material.opacity = 0.3;
+        this.linkShowCity.scale.x = 1;
+        this.linkShowCity.scale.y = 1;
+        this.linkShowCity.scale.z = 1;
       }
-      const speed = this.linkShowCity.scale.scaleUp ? 0.05 : -0.03;
-      this.linkShowCity.scale.x += speed;
-      this.linkShowCity.scale.y += speed;
-      this.linkShowCity.scale.z += speed;
-      this.newColor(this.linkShowCity, this.palitre);
     }
     this.controls.update();
     TWEEN.update();
@@ -207,11 +208,7 @@ export class Earth {
   }
 
   defaultCity() {
-    this.linkShowCity.material.color.setHex(this.colorCity);
-    this.linkShowCity.scale.x = 1;
-    this.linkShowCity.scale.y = 1;
-    this.linkShowCity.scale.z = 1;
-    this.linkShowCity = null;
+    this.scene.remove(this.linkShowCity);
   }
 
   startNeuron() {
@@ -261,9 +258,22 @@ export class Earth {
     this.controls.autoRotate = false;
     this.enableControls(false);
     const city = this.scene.getObjectByName(name);
-    city.material.color.count = Math.floor(Math.random() * 100) - 1;
-    city.material.color.up = true;
-    this.linkShowCity = city;
+    city.material.color.r = 1;
+    city.material.color.g = 1;
+    city.material.color.b = 1;
+    console.log(city.material)
+
+    let geom = new THREE.SphereGeometry(0.07, 32, 32);
+    let mat = new THREE.MeshLambertMaterial({
+      color: 0xffffe6,
+      opacity: 0.3,
+      transparent: true,
+    });
+    this.linkShowCity = new THREE.Mesh(geom, mat);
+    this.linkShowCity.position.set(city.position.x, city.position.y, city.position.z);
+    this.linkShowCity.opDown = false;
+    this.scene.add(this.linkShowCity);
+
     const XYZ = this.decodeCoord(city.lat, city.lon, this.radius + 1);
     if (checkCollision(XYZ)) {
       let srX = (this.camera.position.x + XYZ.x) * 2;

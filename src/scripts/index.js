@@ -66,7 +66,7 @@ city.forEach(item => {
 });
 
 //обработка старта
-$('.logo').click(function() {
+$('.logo').click(function () {
   earth.startRender();
   $('.logo').addClass('end');
   setTimeout(() => {
@@ -79,7 +79,7 @@ $('.logo').click(function() {
 });
 
 //обработка нажатия на телефон
-$('.phone').click(function() {
+$('.phone').click(function () {
   $('.phone').css('display', 'none');
   earth.showCity(cityView[cityCount], TIME_SHOW_CITY);
   setTimeout(() => {

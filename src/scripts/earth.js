@@ -167,6 +167,10 @@ export class Earth {
     this.startNet &&
       this.graph.children.forEach(element => {
         element.children.forEach(item => {
+          item.children[1].material.opacity = item.children[1].material.opacity = item.children[1].material.opDown ? item.children[1].material.opacity - 0.06 : item.children[1].material.opacity + 0.1;
+
+          if (item.children[1].material.opacity >= 0.2) item.children[1].material.opDown = true;
+          if (item.children[1].material.opacity <= 0) item.children[1].material.opDown = false;
           let point = element.curve.getPointAt(item.pos);
           const len = element.curve.getLength() * item.pos;
           item.position.x = point.x;
@@ -354,24 +358,43 @@ export class Earth {
     this.graph.add(group);
   }
   newNeuron(group) {
+
+    let neuron = new THREE.Group();
+    let opacity = Math.random() < 0.3;
     let pos = group.curve.getPointAt(0);
-    let sphereGeometry = new THREE.SphereGeometry((Math.random() < 0.3 ? 0.02 : 0.0001), 8, 8);
+    let sphereGeometry = new THREE.SphereGeometry((opacity ? 0.015 : 0.0001), 8, 8);
     //let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
     // с тенями на нейронах
     //MeshLambertMaterial
-    let sphereMaterial = new THREE.MeshPhongMaterial({
+    let sphereMaterial = new THREE.MeshLambertMaterial({
       color: this.colorGraphPoint,
-      opacity: 0.8,
+      opacity: 0.7,
       //opacity: Math.random() < 0.5 ? 0.8 : 0,
       transparent: true,
     });
+    sphereMaterial.opDown = true;
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    sphere.position.set(pos.x, pos.y, pos.z);
-    sphere.pos = 0;
+
+    neuron.add(sphere);
+
+
+    let geom = new THREE.SphereGeometry((opacity ? 0.04 : 0.0001), 8, 8);
+    let mat = new THREE.MeshPhongMaterial({
+      color: 0xffffd0,
+      opacity: 0,
+      transparent: true,
+    });
+    let sphere1 = new THREE.Mesh(geom, mat);
+
+    neuron.add(sphere1)
+
+    neuron.position.set(pos.x, pos.y, pos.z);
+    neuron.pos = 0;
     group.curve.getLength();
-    sphere.speed = Math.random() * (0.06 - 0.02) + 0.02;
-    sphere.new = group.curve.getLength() * (Math.random() * (0.9 - 0.7) + 0.7);
-    group.add(sphere);
+    neuron.speed = Math.random() * (0.03 - 0.01) + 0.01;
+    neuron.new = group.curve.getLength() * (Math.random() * (0.9 - 0.6) + 0.6);
+
+    group.add(neuron);
   }
   newLine(group) {
     let points = group.curve.getPoints(102);

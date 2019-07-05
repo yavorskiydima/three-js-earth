@@ -67,14 +67,9 @@ export class Earth {
     this.earth.add(this.lines);
     this.render();
 
-
     //СОЛНЦЕ!!!!
     const light = new THREE.PointLight(0xffffff, 1.2);
-    light.position.set(
-      -6.976531536867979,
-      13.4882272933105,
-      2.371717158616364,
-    );
+    light.position.set(-6.976531536867979, 13.4882272933105, 2.371717158616364);
     // add light create shadow
     light.shadow.camera.near = 0.1;
     light.shadow.camera.far = 25;
@@ -134,7 +129,6 @@ export class Earth {
     requestAnimationFrame(this.render);
   };
   render = () => {
-    console.log(this.camera.position)
     if (this.lines.children.length) {
       this.lines.children.forEach(line => {
         line.geometry.setFromPoints(line.points.slice(0, line.count));
@@ -143,7 +137,7 @@ export class Earth {
           this.earth.add(line);
           this.lines.remove(line);
         }
-      })
+      });
     }
     if (this.showRussia) {
       this.isPluseRotation
@@ -170,24 +164,25 @@ export class Earth {
     this.controls.update();
     TWEEN.update();
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-    this.startNet && this.graph.children.forEach(element => {
-      element.children.forEach(item => {
-        let point = element.curve.getPointAt(item.pos);
-        const len = element.curve.getLength() * item.pos;
-        item.position.x = point.x;
-        item.position.y = point.y;
-        item.position.z = point.z;
+    this.startNet &&
+      this.graph.children.forEach(element => {
+        element.children.forEach(item => {
+          let point = element.curve.getPointAt(item.pos);
+          const len = element.curve.getLength() * item.pos;
+          item.position.x = point.x;
+          item.position.y = point.y;
+          item.position.z = point.z;
 
-        if (!item.checked && len > item.new) {
-          this.newNeuron(element);
-          item.checked = true;
-        } else if (item.pos > 1.1) {
-          element.remove(item);
-        }
-        //item.pos += 1 / element.curve.getLength() * 0.008;
-        item.pos += (1 / element.curve.getLength()) * item.speed;
+          if (!item.checked && len > item.new) {
+            this.newNeuron(element);
+            item.checked = true;
+          } else if (item.pos > 1.1) {
+            element.remove(item);
+          }
+          //item.pos += 1 / element.curve.getLength() * 0.008;
+          item.pos += (1 / element.curve.getLength()) * item.speed;
+        });
       });
-    });
     this.star.rotation.x += 0.0005;
 
     if (this.isRender) requestAnimationFrame(this.render);
@@ -333,8 +328,8 @@ export class Earth {
     const city2 = this.scene.getObjectByName(nameCity2);
     const dist = Math.sqrt(
       (city1.position.x - city2.position.x) ** 2 +
-      (city1.position.y - city2.position.y) ** 2 +
-      (city1.position.z - city2.position.z) ** 2,
+        (city1.position.y - city2.position.y) ** 2 +
+        (city1.position.z - city2.position.z) ** 2,
     );
     const p0 = city1.position;
     const p1 = this.decodeCoord(
@@ -373,7 +368,7 @@ export class Earth {
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.set(pos.x, pos.y, pos.z);
     sphere.pos = 0;
-    group.curve.getLength()
+    group.curve.getLength();
     sphere.speed = Math.random() * (0.03 - 0.01) + 0.01;
     sphere.new = group.curve.getLength() * (Math.random() * (0.9 - 0.7) + 0.7);
     group.add(sphere);

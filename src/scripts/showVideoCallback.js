@@ -7,6 +7,8 @@ const finalButton = document.getElementById('start');
 const startEndVideo = document.getElementById('active');
 const endPic = document.getElementById('end');
 
+const audio = new Audio('/images/final-audio.mp3');
+
 export const showVideo = (videoUrl, end = false) => {
   video.setAttribute('src', videoUrl);
   videoBlock.style.display = 'flex';
@@ -75,7 +77,13 @@ function stopOnEscLast(e) {
     hideVideoLast(endVideo);
   }
 }
+
+function startEndVideoEvent() {
+  audio.pause();
+  showVideo('./images/videoplayback.mp4', true);
+}
 function activateNet() {
+  audio.play();
   finalButton.style.transform = 'translateY(40px)';
   finalButton.style.opacity = '0';
   setTimeout(() => {
@@ -84,9 +92,7 @@ function activateNet() {
 
     setTimeout(() => {
       startEndVideo.style.display = 'flex';
-      startEndVideo.addEventListener('click', () =>
-        showVideo('./images/videoplayback.mp4', true),
-      );
+      startEndVideo.addEventListener('click', startEndVideoEvent);
     }, 2000);
     setTimeout(() => earth.startNeuron(), 1000);
     earth.line('Союз «Приморская ТПП»', 'Союз «Дальневосточная ТПП»');

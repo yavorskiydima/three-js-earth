@@ -91,7 +91,7 @@ export class Earth {
       const sphere = new THREE.Mesh(
         new THREE.SphereBufferGeometry(radius, segments, segments),
         new THREE.MeshPhongMaterial({
-          map: new THREE.TextureLoader().load('images/map2.png'),
+          map: new THREE.TextureLoader().load('images/earth-texture.png'),
           opacity: 0.9,
           transparent: true,
         }),

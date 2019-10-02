@@ -4,7 +4,7 @@ export class Earth {
   isRender = true;
   showRussia = false;
   isPluseRotation = true;
-  colorCity = 0xffef61;
+  colorCity = 0x4263f5;
   colorGraphLine = 0x00c4f0;
   colorGraphPoint = 0x00d2ff;
   //colorGraphPoint = 0xFFFFFF;
@@ -220,9 +220,9 @@ export class Earth {
     new TWEEN.Tween(this.camera.position)
       .to(
         {
-          x: -6.403447302020722,
-          y: 8.209259091908317,
-          z: -2.609032708224378,
+          x: -4.631767872694313,
+          y: 9.419332177108378,
+          z: -2.241881257156138,
         },
         4000,
       )
@@ -261,7 +261,6 @@ export class Earth {
     city.material.color.r = 1;
     city.material.color.g = 1;
     city.material.color.b = 1;
-    console.log(city.material)
 
     let geom = new THREE.SphereGeometry(0.07, 32, 32);
     let mat = new THREE.MeshLambertMaterial({

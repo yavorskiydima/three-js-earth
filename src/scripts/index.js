@@ -33,6 +33,17 @@ const cityNameText = [
   'Санкт-Петербург',
 ];
 
+const cityNameVideo = {
+  'Союз «Пермская ТПП»': './images/videoplayback-sd.mp4',
+  'Союз «Южно-Уральская ТПП»': './images/videoplayback-sd.mp4',
+  'Союз «Дальневосточная ТПП»': './images/videoplayback-sd.mp4',
+  'Союз «ТПП Ставропольского края»': './images/videoplayback-sd.mp4',
+  'Союз «ТПП Краснодарского края»': './images/videoplayback-sd.mp4',
+  'Союз «ТПП Воронежской области»': './images/videoplayback-sd.mp4',
+  'Союз «ТПП Саратовской области»': './images/videoplayback-sd.mp4',
+  'Союз «Санкт-Петербургская ТПП»': './images/videoplayback-sd.mp4',
+};
+
 export const earth = new Earth('webgl');
 earth.stopRender();
 
@@ -50,7 +61,7 @@ export function endVideo() {
   cityId.style.opacity = '0';
   cityId.style.transform = 'scale(0)';
   cityCount++;
-  if (cityCount === 1) {
+  if (cityCount === cityView.length) {
     //отображение кнопки запуска нейросети cityView.length
     earth.showRus();
     showFinalButton();
@@ -90,6 +101,6 @@ $('.phone').click(function () {
     cityId.style.transform = 'scale(1)';
   }, TIME_SHOW_CITY);
   setTimeout(() => {
-    showVideo('./images/videoplayback.mp4');
+    showVideo(cityNameVideo[cityView[cityCount]]);
   }, TIME_SHOW_CITY + DELAY_SHOW_VIDEO);
 });

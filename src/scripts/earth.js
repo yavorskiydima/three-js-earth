@@ -1,91 +1,80 @@
 export class Earth {
-  radius = 5;
-  segments = 64;
-  isRender = true;
-  showRussia = false;
-  isPluseRotation = true;
-  colorCity = 0x4263f5;
-  colorGraphLine = 0x00c4f0;
-  colorGraphPoint = 0x00d2ff;
-  //colorGraphPoint = 0xFFFFFF;
-  startNet = false;
-
-  linkShowCity = null;
-
   constructor(el) {
-    this.init(el);
-  }
+    this.radius = 5;
+    this.isRender = true;
+    this.showRussia = false;
+    this.isPluseRotation = true;
+    this.colorCity = 0x4263f5;
+    this.colorGraphLine = 0x00c4f0;
+    this.colorGraphPoint = 0x00d2ff;
+    this.startNet = false;
+    this.linkShowCity = null;
 
+    this.init(el);
+  };
+
+  // генерация основных объектов (сцена, камера, контрол, земля, звезды, свет)
   init(el) {
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.01,
-      1000,
-    );
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    // Enabled shadow support
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.BasicShadowMap;
-
-    this.controls = new THREE.OrbitControls(
-      this.camera,
-      this.renderer.domElement,
-    );
-    this.interaction = new THREE.Interaction(
-      this.renderer,
-      this.scene,
-      this.camera,
-    );
+    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById(el).appendChild(this.renderer.domElement);
+
+    // параметры вращения
     this.controls.maxDistance = 40;
     this.controls.minDistance = 10;
     this.controls.maxPolarAngle = 0.5;
     this.controls.minPolarAngle = 0.5;
     this.controls.autoRotate = true;
     this.controls.autoRotateSpeed = 2;
+    this.enableControls(false);
+
+    // стартовая позиция камеры
     this.camera.position.x = -12.772980418090368;
     this.camera.position.y = 8.304313035745599;
     this.camera.position.z = -2.0294497591270346;
-    this.enableControls(false);
+
+    // общий свет
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+    // звезды
     this.star = createStars(90, 64);
     this.scene.add(this.star);
+
+    // группа для объектов планеты
     this.earth = new THREE.Group();
-    this.sphere = createSphere(this.radius, this.segments);
+    this.scene.add(this.earth);
+
+    // планета
+    // поворот на 'y' сделан что бы подогнать под географические координаты
+    this.sphere = createSphere(this.radius, 64);
     this.sphere.rotation.y = 1.57;
     this.earth.add(this.sphere);
-    //this.earth.add(createClouds(this.radius, this.segments));
-    this.scene.add(this.earth);
+
+    // группа для бегующих нейронов в конце анимации
     this.graph = new THREE.Group();
     this.earth.add(this.graph);
+
+    // группа для городов
     this.city = new THREE.Group();
     this.earth.add(this.city);
+
+    // группа для линий между городами
     this.lines = new THREE.Group();
     this.earth.add(this.lines);
-    this.render();
 
-    //СОЛНЦЕ!!!!
+    // свет для эффекта отражения
     const light = new THREE.PointLight(0xffffff, 0.8);
     light.position.set(-6.976531536867979, 13.4882272933105, 2.371717158616364);
-    // add light create shadow
     light.shadow.camera.near = 0.1;
     light.shadow.camera.far = 25;
     this.earth.add(light);
 
-    const startRGB = { r: 250, g: 193, b: 5 };
-    // { r: 179, g: 116, b: 148 };
-    const endRGB = startRGB;
-    // { r: 234, g: 194, b: 204 };
-    this.palitre = Array(100)
-      .fill(null)
-      .map((item, i) => ({
-        r: startRGB.r + ((endRGB.r - startRGB.r) / 100) * i,
-        g: startRGB.g + ((endRGB.g - startRGB.g) / 100) * i,
-        b: startRGB.b + ((endRGB.b - startRGB.b) / 100) * i,
-      }));
+    this.render();
 
     function createSphere(radius, segments) {
       const sphere = new THREE.Mesh(
@@ -94,21 +83,10 @@ export class Earth {
           map: new THREE.TextureLoader().load('images/earth-texture.png'),
           opacity: 0.9,
           transparent: true,
-        }),
-      );
+        }));
       sphere.receiveShadow = true;
       sphere.castShadow = true;
       return sphere;
-    }
-
-    function createClouds(radius, segments) {
-      return new THREE.Mesh(
-        new THREE.SphereGeometry(radius + 0.003, segments, segments),
-        new THREE.MeshPhongMaterial({
-          map: new THREE.TextureLoader().load('images/fair_clouds_4k.png'),
-          transparent: true,
-        }),
-      );
     }
 
     function createStars(radius, segments) {
@@ -117,17 +95,10 @@ export class Earth {
         new THREE.MeshBasicMaterial({
           map: new THREE.TextureLoader().load('images/galaxy_starfield.png'),
           side: THREE.BackSide,
-        }),
-      );
+        }));
     }
   }
-  stopRender = () => {
-    this.isRender = false;
-  };
-  startRender = () => {
-    this.isRender = true;
-    requestAnimationFrame(this.render);
-  };
+
   render = () => {
     if (this.lines.children.length) {
       this.lines.children.forEach(line => {
@@ -184,7 +155,6 @@ export class Earth {
           } else if (item.pos > 1.1) {
             element.remove(item);
           }
-          //item.pos += 1 / element.curve.getLength() * 0.008;
           item.pos += (1 / element.curve.getLength()) * item.speed;
         });
       });
@@ -194,17 +164,14 @@ export class Earth {
     this.renderer.render(this.scene, this.camera);
   };
 
-  newColor(city, palitre) {
-    city.material.color.r = palitre[city.material.color.count].r / 255;
-    city.material.color.g = palitre[city.material.color.count].g / 255;
-    city.material.color.b = palitre[city.material.color.count].b / 255;
+  enableRender(flag) {
+    this.isRender = flag;
+    if (flag) requestAnimationFrame(this.render);
+  }
 
-    city.material.color.count += city.material.color.up ? 1 : -1;
-    if (city.material.color.count === 99) {
-      city.material.color.up = false;
-    } else if (city.material.color.count === 0) {
-      city.material.color.up = true;
-    }
+  enableControls(flag) {
+    if (flag) this.controls.autoRotateSpeed = 0.3;
+    this.controls.enabled = flag;
   }
 
   defaultCity() {
@@ -235,11 +202,6 @@ export class Earth {
         this.enableControls(true);
       })
       .start();
-  }
-
-  enableControls(flag) {
-    if (flag) this.controls.autoRotateSpeed = 0.3;
-    this.controls.enabled = flag;
   }
 
   showCity(name, time) {
@@ -305,7 +267,7 @@ export class Earth {
     }
   }
 
-  newCity(name, coord, func) {
+  newCity(name, coord) {
     let sphereGeometry = new THREE.SphereGeometry(0.03, 32, 32);
     let sphereMaterial = new THREE.MeshPhongMaterial({
       color: this.colorCity,
@@ -318,10 +280,6 @@ export class Earth {
     earthMesh.position.z = XYZ.z;
     earthMesh.position.x = XYZ.x;
     earthMesh.position.y = XYZ.y;
-    earthMesh.on('click', ev => {
-      return func(ev.data.target.name);
-    });
-    // earthMesh.receiveShadow = true;
     earthMesh.castShadow = true;
     this.city.add(earthMesh);
   }
@@ -372,20 +330,14 @@ export class Earth {
     let opacity = Math.random() < 0.3;
     let pos = group.curve.getPointAt(0);
     let sphereGeometry = new THREE.SphereGeometry((opacity ? 0.015 : 0.0001), 8, 8);
-    //let sphereMaterial = new THREE.MeshBasicMaterial({ color: this.colorGraphPoint });
-    // с тенями на нейронах
-    //MeshLambertMaterial
     let sphereMaterial = new THREE.MeshLambertMaterial({
       color: this.colorGraphPoint,
       opacity: 0.7,
-      //opacity: Math.random() < 0.5 ? 0.8 : 0,
       transparent: true,
     });
     sphereMaterial.opDown = true;
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
     neuron.add(sphere);
-
 
     let geom = new THREE.SphereGeometry((opacity ? 0.04 : 0.0001), 8, 8);
     let mat = new THREE.MeshPhongMaterial({
@@ -394,7 +346,6 @@ export class Earth {
       transparent: true,
     });
     let sphere1 = new THREE.Mesh(geom, mat);
-
     neuron.add(sphere1)
 
     neuron.position.set(pos.x, pos.y, pos.z);
@@ -402,9 +353,9 @@ export class Earth {
     group.curve.getLength();
     neuron.speed = Math.random() * (0.03 - 0.01) + 0.01;
     neuron.new = group.curve.getLength() * (Math.random() * (0.9 - 0.6) + 0.6);
-
     group.add(neuron);
   }
+
   newLine(group) {
     let points = group.curve.getPoints(102);
     var geometry = new THREE.BufferGeometry().setFromPoints(points.slice(0, 1));
@@ -418,6 +369,8 @@ export class Earth {
     curveObject.count = 0;
     this.lines.add(curveObject);
   }
+
+  // Показывает Россию
   showRus() {
     this.defaultCity();
     this.enableControls(false);

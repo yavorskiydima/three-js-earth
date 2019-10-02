@@ -1,4 +1,10 @@
-# Three js Earth UTTP api
+# Three js Russian Earth
+
+Web приложение на three-js для открытия стенда Уральской торгово-промышленной палаты на ИННОПРОМ-2019 Екатеринбург.
+Видео: https://www.youtube.com/watch?v=yeu7j5lJIEA
+
+
+p.s. первый опыт использования three.js да и вообще рисования в вебе, проект сделан меньше чем за месяц.
 
 
 ### Installation
@@ -7,24 +13,14 @@
 npm install
 ```
 
-### Start Dev Server
+### Start
 
 ```
 npm start
 ```
 
-### Build Prod Version
+### Build
 
 ```
 npm run build
 ```
-
-`const earth = new Earth(id)` - инициализация приложения с указанием `id` html тега
-
-| Function name | Description                    |
-| ------------- | ------------------------------ |
-|`move(x, y, z)`|Запустить вращение земли по координатам, без параметров остановится|
-| `enableControls(flag)`   | true - разрешено управлять пользователю, false - нет |
-| `axis()`   | Отображение осей |
-| `newCity(name, {lat, lon}, func)`   | Создание города на шаре, в конце передается функция которая вызывается при клике |
-| `showCity(name, time)`   | Перенос положение экрана к городу |

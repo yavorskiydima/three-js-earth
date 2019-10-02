@@ -80,7 +80,7 @@ function stopOnEscLast(e) {
 
 function startEndVideoEvent() {
   audio.pause();
-  showVideo('./images/videoplayback.mp4', true);
+  showVideo('./images/videoplayback-sd.mp4', true);
 }
 function activateNet() {
   audio.play();
